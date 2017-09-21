@@ -7,6 +7,8 @@
 #include <thread>
 #include <chrono>
 
+#include "coordinate.h"
+
 #pragma once
 
 namespace draughts

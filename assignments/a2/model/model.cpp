@@ -23,6 +23,12 @@ int draughts::model::model::get_player_score(int playernum)
 
 void draughts::model::model::start_game(int plr1, int plr2)
 {
+	coordinate testCoord = coordinate::from_crush(3, 5);
+	std::pair<int, int> uncr = testCoord.get_uncrush();
+	std::pair<int, int> cr = testCoord.get_crush();
+
+	std::cout << "crushed: x" << uncr.first << " y" << uncr.second << "\n";
+	std::cout << "crushed: x" << cr.first << " y" << cr.second << "\n";
 }
 
 int draughts::model::model::get_winner()
