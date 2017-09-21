@@ -47,7 +47,9 @@ std::pair<std::pair<int,int>, std::pair<int,int>>
     std::pair<int,int> start;
     std::pair<int,int> end;
     std::cout << "Please enter your next move: " ;
-    get_input(input);
+	//pauls bugfix from the discussions, not my code
+	input = window::get_input(themodel->get_player_name(themodel->get_current_player()));
+    //get_input(input);
     std::vector<std::string> moves;
     std::vector<std::string> coords;
     boost::split(moves, input, [](char ch){return ch == '-';});
