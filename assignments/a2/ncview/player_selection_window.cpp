@@ -22,6 +22,7 @@ void draughts::ncview::player_selection_window::activate(void)
 {
     if(full_list.size() < NUM_PLAYERS)
     {
+		std::cout << full_list.size() << "\n";//TODO remove me
         std::cerr << "error: there aren't enough players registered "
             << "to play a game. Go back and register more players." 
             << std::endl;

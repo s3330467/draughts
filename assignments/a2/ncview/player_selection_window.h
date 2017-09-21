@@ -17,13 +17,13 @@ namespace draughts
     namespace ncview
     {
 		//added some spacing between different things to promote readability
-        using player_map = std::map<int, std::string>;
+        using player_map = std::map<int, std::string>;//wtf? i thought you said you didnt like hiding things
         const int NUM_PLAYERS = 2;
 
 
         class player_selection_window : public window
         {
-            const std::map<int,std::string> full_list;
+            const std::map<int,std::string> full_list;//and then why didnt you use that 'using' statement here?
             std::map<int,std::string> selected_list;
 
             public:
