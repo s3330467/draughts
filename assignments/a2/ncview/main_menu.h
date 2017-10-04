@@ -6,6 +6,7 @@ namespace draughts
 {
     namespace ncview
     {
+		//not to be confused with the ui main_menu function
         class main_menu : public menu
         {
             static const std::vector<std::string> strings;

@@ -17,12 +17,16 @@ namespace draughts
     }
     namespace ncview
     {
+		//there is a main_menu class here, do not confuse it with the ui
+		//main_menu function
         class ui
         {
             draughts::nc_controller::controller * thecontroller;
             draughts::model::model * themodel;
-            ui(void);
             static std::unique_ptr<ui> instance;
+
+            ui(void);//constructor, creates instances of controller and model
+
             public:
                 void main_menu(void);
 
