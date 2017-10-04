@@ -1,0 +1,6 @@
+#!/bin/bash
+
+for arg in "$@"; do
+	./rmcamel.sh "$arg"
+	./rmcreturn.sh "$arg"
+done
