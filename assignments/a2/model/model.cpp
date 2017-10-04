@@ -53,6 +53,8 @@ void draughts::model::model::make_move(int playernum,
 
 void draughts::model::model::add_player(const std::string& p)
 {
+    std::unique_ptr<player> newPlayer = std::make_unique<player>(p);
+    player_list.push_back(std::move(newPlayer));
 }
 
 bool draughts::model::model::player_exists(const std::string& pname)
@@ -69,6 +71,11 @@ std::map<int, std::string> draughts::model::model::get_player_list(void)
     const
 {
     std::map<int, std::string> nameslist;
+    for(int i = 0; i < player_list.size(); i++) {
+        player* player = player_list.at(i).get();
+        std::string playerName = player->get_playerName();
+        nameslist[i] = playerName;
+    }
     return nameslist;
 }
 

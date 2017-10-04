@@ -8,6 +8,7 @@
 #include <chrono>
 
 #include "coordinate.h"
+#include "player.h"
 
 #pragma once
 
@@ -18,6 +19,7 @@ namespace draughts
         class model
         {
             static std::unique_ptr<model> instance;
+            std::vector<std::unique_ptr<player>> player_list;
 
             model(void);
             bool player_exists(const std::string&);
