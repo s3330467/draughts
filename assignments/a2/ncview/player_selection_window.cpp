@@ -1,15 +1,17 @@
 #include "player_selection_window.h"
 #include "../nc_controller/controller.h"
 
-draughts::ncview::player_selection_window::player_selection_window(
-        const player_map& players_list 
-        )
-    : window(), full_list(players_list)
+using namespace draughts;
+using namespace ncview;
+
+player_selection_window::player_selection_window(
+        const std::map<int, std::string>& players_list 
+        ) : window(), full_list(players_list)
 {
 }
 
     std::string 
-draughts::ncview::player_selection_window::players_to_string(void)
+player_selection_window::players_to_string(void)
 {
     std::ostringstream out;
     for(auto pair : selected_list){
@@ -18,7 +20,7 @@ draughts::ncview::player_selection_window::players_to_string(void)
     return out.str();
 }
 
-void draughts::ncview::player_selection_window::activate(void)
+void player_selection_window::activate(void)
 {
     if(full_list.size() < NUM_PLAYERS)
     {
@@ -58,8 +60,9 @@ void draughts::ncview::player_selection_window::activate(void)
 
 
     std::vector<std::string> 
-draughts::ncview::player_selection_window::player_strings(
-        const player_map& all_players, player_map& selected)
+player_selection_window::player_strings(
+        const std::map<int, std::string>& all_players, 
+		std::map<int, std::string>& selected)
 {
     int size = all_players.size();
     int count = 0;
@@ -78,9 +81,10 @@ draughts::ncview::player_selection_window::player_strings(
     return menu_strings;
 }
 
-    std::vector<std::unique_ptr<draughts::nc_controller::command>> 
-draughts::ncview::player_selection_window::create_actions(
-        const player_map& all_players, player_map & selected)
+    std::vector<std::unique_ptr<nc_controller::command>> 
+player_selection_window::create_actions(
+        const std::map<int, std::string>& all_players, 
+		std::map<int, std::string> & selected)
 {
     std::vector<std::unique_ptr<nc_controller::command>> commands;
     for(auto & pair : all_players)
