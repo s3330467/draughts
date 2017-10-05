@@ -71,7 +71,7 @@ std::map<int, std::string> draughts::model::model::get_player_list(void)
     const
 {
     std::map<int, std::string> nameslist;
-    for(int i = 0; i < player_list.size(); i++) {
+    for(unsigned int i = 0; i < player_list.size(); i++) {
         player* player = player_list.at(i).get();
         std::string playerName = player->get_playerName();
         nameslist[i] = playerName;
