@@ -1,16 +1,13 @@
 #include "model.h"
 
-//using namespace of this class
-using namespace draughts::model;
-
-std::unique_ptr<model> model::instance =
+std::unique_ptr<draughts::model::model> draughts::model::model::instance =
 nullptr;
 
-model::model(void) 
+draughts::model::model::model(void) 
 {
 }
 
-model * model::get_instance(void)
+draughts::model::model * draughts::model::model::get_instance(void)
 {
     if(instance == nullptr)
     {
@@ -19,12 +16,12 @@ model * model::get_instance(void)
     return instance.get();    
 }
 
-int model::get_player_score(int playernum)
+int draughts::model::model::get_player_score(int playernum)
 {
     return EOF;
 }
 
-void model::start_game(int plr1, int plr2)
+void draughts::model::model::start_game(int plr1, int plr2)
 {
 	coordinate test_coord = coordinate::from_crush(3, 5);
 	std::pair<int, int> uncr = test_coord.get_uncrush();
@@ -34,12 +31,12 @@ void model::start_game(int plr1, int plr2)
 	std::cout << "crushed:   x" << cr.first << " y" << cr.second << "\n";
 }
 
-int model::get_winner()
+int draughts::model::model::get_winner()
 {
     return EOF;
 }
 
-std::string model::get_player_name(int id)
+std::string draughts::model::model::get_player_name(int id)
 {
     for(unsigned int i = 0; i < player_list.size(); i++){
         player* player = player_list.at(i).get();
@@ -50,33 +47,43 @@ std::string model::get_player_name(int id)
     return "";
 }
 
-char model::get_token(int x ,int y)
+char draughts::model::model::get_token(int x ,int y)
 {
-    return '\0';
+    if(coordinate.is_valid(x,y)){
+        return ' ';
+    }
+    game_piece game_piece = get_game_piece(coordinate::from_uncrush(x,y));
+    if(game_piece.get_is_top()){
+        return 'x';
+    }
+    if(!game_piece.get_is_top()){
+        return 'o';
+    }
+    return ' ';
 }
 
-void model::make_move(int playernum,
+void draughts::model::model::make_move(int playernum,
         int startx, int starty, int endx, int endy)
 {
 }
 
-void model::add_player(const std::string& p)
+void draughts::model::model::add_player(const std::string& p)
 {
     std::unique_ptr<player> new_player = std::make_unique<player>(p, next_player_id++);
     player_list.push_back(std::move(new_player));
 }
 
-bool model::player_exists(const std::string& pname)
+bool draughts::model::model::player_exists(const std::string& pname)
 {
     return false;
 }
 
-int model::get_current_player(void)
+int draughts::model::model::get_current_player(void)
 {
     return EOF;
 }
 
-std::map<int, std::string> model::get_player_list(void) 
+std::map<int, std::string> draughts::model::model::get_player_list(void) 
     const
 {
     std::map<int, std::string> nameslist;
@@ -89,23 +96,23 @@ std::map<int, std::string> model::get_player_list(void)
     return nameslist;
 }
 
-void model::delete_instance(void)
+void draughts::model::model::delete_instance(void)
 {
     instance.reset(nullptr);
 }
 
 
-int model::get_width()
+int draughts::model::model::get_width()
 {
-    return EOF;
+    return game_board.get_x();
 }
 
-int model::get_height()
+int draughts::model::model::get_height()
 {
-    return EOF;
+    return game_board.get_y();
 }
 
-model::~model(void)
+draughts::model::model::~model(void)
 {
 }
 
