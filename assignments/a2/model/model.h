@@ -10,6 +10,7 @@
 #include "coordinate.h"
 #include "player.h"
 #include "game_piece.h"
+#include "game_board.h"
 
 #pragma once
 
@@ -20,6 +21,8 @@ namespace draughts
         class model
         {
             static std::unique_ptr<model> instance;
+
+			game_board board;
 
             std::vector<std::unique_ptr<player>> player_list;
             int next_player_id = 0;

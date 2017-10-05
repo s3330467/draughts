@@ -1,4 +1,6 @@
-#include <string>
+#include "coordinate.h"
+
+#pragma once
 
 namespace draughts {
 	namespace model {

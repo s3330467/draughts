@@ -5,8 +5,8 @@ namespace draughts {
 
 		class player {
 			std::string player_name;
-			int total_score;
 			int id;
+			int total_score;
 
 			public:
 			player(std::string player_name, int id) : player_name(player_name), id(id), total_score(0) {}

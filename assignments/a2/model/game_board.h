@@ -1,4 +1,9 @@
-#include <utility>
+#include <vector>
+#include <memory>
+
+#include "game_piece.h"
+
+#pragma once
 
 namespace draughts {
 	namespace model {
@@ -12,15 +17,10 @@ namespace draughts {
 			public:
 			game_board(int x, int y);
 
-			/*
-			static coordinate from_crush(int x, int y) { return coordinate(x, y); }
-			static coordinate from_uncrush(int x, int y) { return coordinate(x/2, y); }
-			*/
-
 			int get_x() { return x; }
 			int get_y() { return y; }
 
-			game_piece * get_game_piece(coordinate coord) {
+			game_piece * get_piece(coordinate coord);
 		};
 	}
 }

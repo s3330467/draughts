@@ -7,7 +7,7 @@ coordinate game_piece::get_coords(){
 	return coords;
 }
 
-int game_piece::get_is_top() {
+bool game_piece::get_is_top() {
 	return is_top;
 }
 

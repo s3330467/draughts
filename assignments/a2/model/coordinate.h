@@ -1,5 +1,7 @@
 #include <utility>
 
+#pragma once
+
 namespace draughts {
 	namespace model {
 
@@ -19,7 +21,7 @@ namespace draughts {
 
 			//used to check weather a coordinate from controller is valid or a
 			//blank space
-			bool is_valid(int x, int y);
+			static bool is_valid(int x, int y);
 
 			bool check_valid();
 		};
