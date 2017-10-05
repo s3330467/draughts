@@ -15,7 +15,7 @@ std::pair<int, int> coordinate::get_uncrush() {
 	return std::make_pair(newx, y);
 }
 
-static bool is_valid(int x, int y) {
+static bool coordinate::is_valid(int x, int y) {
 	if(y%2 == 0) {
 		//x should be odd
 		return x%2;
@@ -23,4 +23,8 @@ static bool is_valid(int x, int y) {
 		//x should be even
 		return !(x%2);
 	}
+}
+
+static bool coordinate::check_valid() {
+	return !is_valid(0,0) && is_valid(0,1) && !is_valid(1,0) && is_valid(1,1);
 }

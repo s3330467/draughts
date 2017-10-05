@@ -20,6 +20,8 @@ namespace draughts {
 			//used to check weather a coordinate from controller is valid or a
 			//blank space
 			static bool is_valid(int x, int y);
+
+			static bool check_valid();
 		};
 	}
 }
