@@ -19,6 +19,7 @@ namespace draughts
         class model
         {
             static std::unique_ptr<model> instance;
+
             std::vector<std::unique_ptr<player>> player_list;
             int next_player_id = 0;
 

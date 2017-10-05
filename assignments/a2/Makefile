@@ -1,4 +1,4 @@
-MODELFILES=model/model.cpp model/coordinate.cpp model/player.cpp
+MODELFILES=model/model.cpp model/coordinate.cpp model/game_board.cpp
 NCFILES=ncview/add_player_window.cpp ncview/game_window.cpp ncview/main_menu.cpp ncview/menu.cpp ncview/player_selection_window.cpp ncview/ui.cpp ncview/window.cpp 
 CONTFILES=nc_controller/command.cpp nc_controller/controller.cpp
 
