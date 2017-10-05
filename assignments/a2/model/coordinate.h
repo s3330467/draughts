@@ -1,16 +1,21 @@
 #include <utility>
 
-class coordinate {
-	int x;
-	int y;
+namespace draughts {
+	namespace model {
 
-	protected:
-	coordinate(int x, int y) : x(x), y(y) {}
+		class coordinate {
+			int x;
+			int y;
 
-	public:
-	static coordinate from_crush(int x, int y) { return coordinate(x, y); }
-	static coordinate from_uncrush(int x, int y) { return coordinate(x/2, y); }
+			protected:
+			coordinate(int x, int y) : x(x), y(y) {}
 
-	std::pair<int, int> get_crush();
-	std::pair<int, int> get_uncrush();
-};
+			public:
+			static coordinate from_crush(int x, int y) { return coordinate(x, y); }
+			static coordinate from_uncrush(int x, int y) { return coordinate(x/2, y); }
+
+			std::pair<int, int> get_crush();
+			std::pair<int, int> get_uncrush();
+		};
+	}
+}
