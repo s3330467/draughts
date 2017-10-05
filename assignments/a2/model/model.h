@@ -20,6 +20,7 @@ namespace draughts
         {
             static std::unique_ptr<model> instance;
             std::vector<std::unique_ptr<player>> player_list;
+            int next_player_id = 0;
 
             model(void);
             bool player_exists(const std::string&);
