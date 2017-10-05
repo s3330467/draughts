@@ -27,8 +27,8 @@ void draughts::model::model::start_game(int plr1, int plr2)
 	std::pair<int, int> uncr = test_coord.get_uncrush();
 	std::pair<int, int> cr = test_coord.get_crush();
 
-	std::cout << "crushed: x" << uncr.first << " y" << uncr.second << "\n";
-	std::cout << "crushed: x" << cr.first << " y" << cr.second << "\n";
+	std::cout << "uncrushed: x" << uncr.first << " y" << uncr.second << "\n";
+	std::cout << "crushed:   x" << cr.first << " y" << cr.second << "\n";
 }
 
 int draughts::model::model::get_winner()
@@ -38,6 +38,12 @@ int draughts::model::model::get_winner()
 
 std::string draughts::model::model::get_player_name(int id)
 {
+    for(unsigned int i = 0; i < player_list.size(); i++){
+        player* player = player_list.at(i).get();
+        if(player->get_id() == (int)i){
+            return player->get_player_name();
+        }
+    }
     return "";
 }
 
@@ -53,7 +59,7 @@ void draughts::model::model::make_move(int playernum,
 
 void draughts::model::model::add_player(const std::string& p)
 {
-    std::unique_ptr<player> new_player = std::make_unique<player>(p);
+    std::unique_ptr<player> new_player = std::make_unique<player>(p, next_player_id++);
     player_list.push_back(std::move(new_player));
 }
 
@@ -71,10 +77,11 @@ std::map<int, std::string> draughts::model::model::get_player_list(void)
     const
 {
     std::map<int, std::string> nameslist;
-    for(unsigned int i = 0; i < player_list.size(); i++) {
-        player* player = player_list.at(i).get();
+    auto this_model = get_instance();
+    for(unsigned int i = 0; i < this_model->player_list.size(); i++) {
+        player* player = this_model->player_list.at(i).get();
         std::string player_name = player->get_player_name();
-        nameslist[i] = player_name;
+        nameslist[(int)i] = player_name;
     }
     return nameslist;
 }
