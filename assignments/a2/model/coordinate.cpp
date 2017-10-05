@@ -4,7 +4,7 @@
 using namespace draughts::model;
 
 std::pair<int, int> coordinate::get_crush() {
-	return std::make_pair(x/2, y);
+	return std::make_pair(x, y);
 }
 
 std::pair<int, int> coordinate::get_uncrush() {
