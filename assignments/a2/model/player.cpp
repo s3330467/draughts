@@ -1,9 +1,9 @@
 #include "player.h"
 
-std::string player::get_playerName() {
-	return playerName;
+std::string player::get_player_name() {
+	return player_name;
 }
 
-int player::get_totalScore() {
-	return totalScore;
+int player::get_total_score() {
+	return total_score;
 }

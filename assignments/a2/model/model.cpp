@@ -23,9 +23,9 @@ int draughts::model::model::get_player_score(int playernum)
 
 void draughts::model::model::start_game(int plr1, int plr2)
 {
-	coordinate testCoord = coordinate::from_crush(3, 5);
-	std::pair<int, int> uncr = testCoord.get_uncrush();
-	std::pair<int, int> cr = testCoord.get_crush();
+	coordinate test_coord = coordinate::from_crush(3, 5);
+	std::pair<int, int> uncr = test_coord.get_uncrush();
+	std::pair<int, int> cr = test_coord.get_crush();
 
 	std::cout << "crushed: x" << uncr.first << " y" << uncr.second << "\n";
 	std::cout << "crushed: x" << cr.first << " y" << cr.second << "\n";
@@ -53,8 +53,8 @@ void draughts::model::model::make_move(int playernum,
 
 void draughts::model::model::add_player(const std::string& p)
 {
-    std::unique_ptr<player> newPlayer = std::make_unique<player>(p);
-    player_list.push_back(std::move(newPlayer));
+    std::unique_ptr<player> new_player = std::make_unique<player>(p);
+    player_list.push_back(std::move(new_player));
 }
 
 bool draughts::model::model::player_exists(const std::string& pname)
@@ -73,8 +73,8 @@ std::map<int, std::string> draughts::model::model::get_player_list(void)
     std::map<int, std::string> nameslist;
     for(unsigned int i = 0; i < player_list.size(); i++) {
         player* player = player_list.at(i).get();
-        std::string playerName = player->get_playerName();
-        nameslist[i] = playerName;
+        std::string player_name = player->get_player_name();
+        nameslist[i] = player_name;
     }
     return nameslist;
 }
