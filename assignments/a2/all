@@ -1,3 +1,5 @@
 #!/bin/bash
 
-find . | grep -E ^.*'\.'\(cpp\|h\)$
+for arg in "$@"; do
+	find "$arg" | grep -E ^.*'\.'\(cpp\|h\)$
+done

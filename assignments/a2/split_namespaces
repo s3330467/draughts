@@ -1,0 +1,5 @@
+#!/bin/bash 
+
+for arg in "$@"; do
+	sed -i 's,^\(using namespace .*\)::\(.*\)$,\1;\nusing namespace \2,g' "$arg"
+done
