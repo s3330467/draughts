@@ -1,7 +1,8 @@
 #include "coordinate.h"
 
 //using namespace of this class
-using namespace draughts::model;
+using namespace draughts;
+using namespace model;
 
 std::pair<int, int> coordinate::get_crush() {
 	return std::make_pair(x, y);

@@ -1,7 +1,8 @@
 #include "game_board.h"
 
 //using namespace of this class
-using namespace draughts::model;
+using namespace draughts;
+using namespace model;
 
 game_board::game_board(int x, int y) : x(x), y(y) {
 	board = std::vector<std::vector<std::unique_ptr<piece::game_piece>>>(x);
