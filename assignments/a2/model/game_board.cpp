@@ -15,10 +15,14 @@ game_board::game_board(int x, int y) : x(x), y(y) {
 
 			if(j < static_cast<unsigned int>(y/2 - 1)) {
 				//top
-				board[i][j] = std::make_unique<game_piece>(game_piece(coord, true));
+				board[i][j] = std::make_unique<game_piece>(
+						game_piece(coord, true));
+
 			} else if(j > static_cast<unsigned int>(y/2)) {
 				//bottom
-				board[i][j] = std::make_unique<game_piece>(game_piece(coord, false));
+				board[i][j] = std::make_unique<game_piece>(
+						game_piece(coord, false));
+
 			} else {
 				//middle
 				board[i][j] = std::unique_ptr<game_piece>(nullptr);

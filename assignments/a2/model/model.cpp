@@ -26,11 +26,12 @@ int model::get_player_score(int playernum)
 void model::start_game(int plr1, int plr2)
 {
 	coordinate test_coord = coordinate::from_crush(3, 5);
-	std::pair<int, int> uncr = test_coord.get_uncrush();
 	std::pair<int, int> cr = test_coord.get_crush();
+	std::pair<int, int> uncr = test_coord.get_uncrush();
 
-	std::cout << "uncrushed: x" << uncr.first << " y" << uncr.second << "\n";
+	std::cout << "starting(from crushed): x" << 3 << " y" << 5 << "\n";
 	std::cout << "crushed:   x" << cr.first << " y" << cr.second << "\n";
+	std::cout << "uncrushed: x" << uncr.first << " y" << uncr.second << "\n";
 }
 
 int model::get_winner()
@@ -51,6 +52,9 @@ std::string model::get_player_name(int id)
 
 char model::get_token(int x ,int y)
 {
+	//TODO: remove the printf
+	//printf("getting token at: x%d y%d\n", x, y);
+
     if(coordinate::is_valid(x,y)){
         return ' ';
     }

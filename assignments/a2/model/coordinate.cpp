@@ -9,13 +9,16 @@ std::pair<int, int> coordinate::get_crush() {
 
 std::pair<int, int> coordinate::get_uncrush() {
 	int newx = x * 2;
-	if(y%2 == 0) {
+	if(y%2 != 0) {
 		newx++;
 	}
-	return std::make_pair(newx, y);
+	//pauls code has x and y swapped and indices starts at 1
+	return std::make_pair(y+1, newx+1);
 }
 
 bool coordinate::is_valid(int x, int y) {
+	x -= 1;
+	y -= 1;
 	if(y%2 == 0) {
 		//x should be odd
 		return x%2 != 0;
