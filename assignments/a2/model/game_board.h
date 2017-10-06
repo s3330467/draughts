@@ -1,6 +1,7 @@
 #include <vector>
 #include <memory>
 
+#include "man_piece.h"
 #include "game_piece.h"
 
 #pragma once
