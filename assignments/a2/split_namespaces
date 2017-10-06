@@ -1,5 +1,12 @@
 #!/bin/bash 
 
+#this will turn this:
+#using namespace my::namespace;
+
+#into this:
+#using namespace my;
+#using namespace namespace;
+
 for arg in "$@"; do
 	sed -i 's,^\(using namespace .*\)::\(.*\)$,\1;\nusing namespace \2,g' "$arg"
 done

@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#this will print the path for all the files ending with:
+#	.cpp
+#	.h
+#in all the subdirectories of the directory specified specified
+
 for arg in "$@"; do
 	find "$arg" | grep -E ^.*'\.'\(cpp\|h\)$
 done

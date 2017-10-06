@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#this will run the camelcase and carriage return cleaners on all files specified
+
 for arg in "$@"; do
 	./rmcamel.sh "$arg"
 	./rmcreturn.sh "$arg"
