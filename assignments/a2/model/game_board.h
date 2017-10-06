@@ -1,8 +1,8 @@
 #include <vector>
 #include <memory>
 
-#include "man_piece.h"
-#include "game_piece.h"
+#include "pieces/man_piece.h"
+#include "pieces/game_piece.h"
 
 #pragma once
 
@@ -10,7 +10,7 @@ namespace draughts {
 	namespace model {
 
 		class game_board {
-			std::vector<std::vector<std::unique_ptr<game_piece>>> board;
+			std::vector<std::vector<std::unique_ptr<piece::game_piece>>> board;
 			int x;
 			int y;
 
@@ -21,7 +21,7 @@ namespace draughts {
 			int get_x() { return x; }
 			int get_y() { return y; }
 
-			game_piece * get_piece(coordinate coord);
+			piece::game_piece * get_piece(coordinate coord);
 		};
 	}
 }

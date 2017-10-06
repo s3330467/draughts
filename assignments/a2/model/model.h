@@ -9,7 +9,7 @@
 
 #include "coordinate.h"
 #include "player.h"
-#include "game_piece.h"
+#include "pieces/game_piece.h"
 #include "game_board.h"
 
 #pragma once

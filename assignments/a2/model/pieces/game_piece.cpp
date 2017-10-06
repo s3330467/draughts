@@ -1,7 +1,9 @@
 #include "game_piece.h"
 
 //using namespace of this class
-using namespace draughts::model; 
+using namespace draughts;
+using namespace model;
+using namespace piece; 
 
 coordinate game_piece::get_coords() {
 	return coords;

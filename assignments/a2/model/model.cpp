@@ -59,7 +59,9 @@ char model::get_token(int x ,int y)
         return ' ';
     }
 
-    game_piece *game_piece = board.get_piece(coordinate::from_uncrush(x,y));
+	piece::game_piece *game_piece = board.get_piece(
+			coordinate::from_uncrush(x,y)
+			);
 
 	if(game_piece == nullptr) {
 		return ' ';
