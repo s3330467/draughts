@@ -5,7 +5,7 @@ using namespace draughts::model;
 std::unique_ptr<model> model::instance =
 nullptr;
 
-model::model(void) : board(game_board(8, 8))
+model::model(void) : board(game_board(10, 10))
 {
 }
 
@@ -32,6 +32,9 @@ void model::start_game(int plr1, int plr2)
 	std::cout << "starting(from crushed): x" << 3 << " y" << 5 << "\n";
 	std::cout << "crushed:   x" << cr.first << " y" << cr.second << "\n";
 	std::cout << "uncrushed: x" << uncr.first << " y" << uncr.second << "\n";
+
+	active_players.first = plr1;
+	active_players.second = plr2;
 }
 
 int model::get_winner()

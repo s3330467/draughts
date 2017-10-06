@@ -27,6 +27,8 @@ namespace draughts
             std::vector<std::unique_ptr<player>> player_list;
             int next_player_id = 0;
 
+			std::pair<int, int> active_players;
+
             model(void);
             bool player_exists(const std::string&);
 
