@@ -22,8 +22,8 @@ namespace draughts {
 				return coordinate((x-1)/2, y-1);
 			}
 
-			std::pair<int, int> get_crush();
-			std::pair<int, int> get_uncrush();
+			std::pair<int, int> get_crush() const;
+			std::pair<int, int> get_uncrush() const;
 
 			//used to check weather a coordinate from controller is valid or a
 			//blank space

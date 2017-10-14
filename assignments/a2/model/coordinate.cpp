@@ -4,11 +4,11 @@
 using namespace draughts;
 using namespace model;
 
-std::pair<int, int> coordinate::get_crush() {
+std::pair<int, int> coordinate::get_crush() const {
 	return std::make_pair(x, y);
 }
 
-std::pair<int, int> coordinate::get_uncrush() {
+std::pair<int, int> coordinate::get_uncrush() const {
 	int newx = x * 2;
 	if(y%2 != 0) {
 		newx++;

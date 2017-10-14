@@ -15,17 +15,17 @@ game_board::game_board(int x, int y) : x(x), y(y) {
 			coordinate coord = coordinate::from_crush(i, j);
 
 			if(j < static_cast<unsigned int>(y/2 - 1)) {
-				//top
+				//top, player 1
 				board[i][j] = std::make_unique<piece::man>(
 						piece::man(coord, true));
 
 			} else if(j > static_cast<unsigned int>(y/2)) {
-				//bottom
+				//bottom, player 2
 				board[i][j] = std::make_unique<piece::man>(
 						piece::man(coord, false));
 
 			} else {
-				//middle
+				//middle, no piece
 				board[i][j] = std::unique_ptr<piece::game_piece>(nullptr);
 			}
 
@@ -33,13 +33,23 @@ game_board::game_board(int x, int y) : x(x), y(y) {
 	}
 }
 
-piece::game_piece * game_board::get_piece(coordinate coord) {
+const piece::game_piece * game_board::get_piece(coordinate coord) const {
 	std::pair<int, int> cr = coord.get_crush();
 
 	return board[cr.first][cr.second].get();
 }
 
-int make_move(coordinate from, coordinate to) {
-	//TODO
+int game_board::make_move(coordinate from, coordinate to) {
+	switch(get_piece(from)->is_valid(to)) {
+		case piece::game_piece::VALID:
+			//TOOD
+			break;
+		case piece::game_piece::VALID_ATTACK:
+			//TOOD
+			break;
+		case piece::game_piece::INVALID:
+			//TOOD
+			break;
+	}
 	return EOF;
 }
