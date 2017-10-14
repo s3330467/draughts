@@ -11,7 +11,7 @@ namespace draughts {
 				public:
 					man(coordinate coords, bool is_top) : game_piece(coords, is_top) {}
 
-					move::move_type is_valid(coordinate to) const;
+					move::mtype is_valid(coordinate to) const;
 					std::vector<move> get_valid_moves() const;
 			};
 		}

@@ -15,21 +15,21 @@ std::vector<move> man::get_valid_moves() const {
 	}
 
 	coordinate to = coordinate::from_uncrush(current.first + dx1, current.second + dy);
-	out.push_back(move(coords, to, move::move_type::VALID));
+	out.push_back(move(coords, to, move::mtype::VALID));
 
 	to = coordinate::from_uncrush(current.first + dx2, current.second + dy);
-	out.push_back(move(coords, to, move::move_type::VALID));
+	out.push_back(move(coords, to, move::mtype::VALID));
 	
 	to = coordinate::from_uncrush(current.first + 2 * dx1, current.second + 2 * dy);
-	out.push_back(move(coords, to, move::move_type::VALID_ATTACK));
+	out.push_back(move(coords, to, move::mtype::VALID_ATTACK));
 
 	to = coordinate::from_uncrush(current.first + 2 * dx2, current.second + 2 * dy);
-	out.push_back(move(coords, to, move::move_type::VALID_ATTACK));
+	out.push_back(move(coords, to, move::mtype::VALID_ATTACK));
 
 	return out;
 }
 
-move::move_type man::is_valid(coordinate to) const {
+move::mtype man::is_valid(coordinate to) const {
 	std::pair<int, int> curpos = coords.get_uncrush();
 	std::pair<int, int> newpos = to.get_uncrush();
 	int dx = newpos.first - curpos.first;
@@ -38,18 +38,18 @@ move::move_type man::is_valid(coordinate to) const {
 	if(is_top) {
 		//down diagonal is valid
 		if((dx == 1 || dx == -1) && dy == 1) {
-			return move::move_type::VALID;
+			return move::mtype::VALID;
 		} else if((dx == 2 || dx == -2) && dy == 2) {
-			return move::move_type::VALID_ATTACK;
+			return move::mtype::VALID_ATTACK;
 		}
 	} else {
 		//up diagonal is valid
 		if((dx == 1 || dx == -1) && dy == -1) {
-			return move::move_type::VALID;
+			return move::mtype::VALID;
 		} else if((dx == 2 || dx == -2) && dy == -2) {
-			return move::move_type::VALID_ATTACK;
+			return move::mtype::VALID_ATTACK;
 		}
 	}
 
-	return move::move_type::INVALID;
+	return move::mtype::INVALID;
 }

@@ -5,14 +5,14 @@ namespace draughts {
 	namespace model {
 
 		struct move {
-				enum move_type { VALID, VALID_ATTACK, INVALID };
+				enum mtype { VALID, VALID_ATTACK, INVALID };
 
 				coordinate from;
 				coordinate to;
-				move_type type;
+				mtype type;
 
 				move(void) {}
-				move(coordinate f, coordinate t, move_type ty) : from(f), to(t), type(ty) {}
+				move(coordinate from, coordinate to, mtype type) : from(from), to(to), type(type) {}
 		};
 	}
 }

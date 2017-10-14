@@ -10,6 +10,6 @@ std::vector<move> king::get_valid_moves() const {//TODO
 	return out;
 }
 
-move::move_type king::is_valid(coordinate to) const {//TODO
-	return move::move_type::INVALID;
+move::mtype king::is_valid(coordinate to) const {//TODO
+	return move::mtype::INVALID;
 }
