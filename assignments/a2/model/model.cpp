@@ -68,7 +68,7 @@ char model::get_token(int x ,int y)
         return ' ';
     }
 
-	piece::game_piece *game_piece = board.get_piece(
+	const piece::game_piece *game_piece = board.get_piece(
 			coordinate::from_uncrush(x,y)
 			);
 
@@ -93,6 +93,9 @@ void model::make_move(int playernum,
 
 	coordinate start = coordinate::from_uncrush(startx, starty);
     coordinate end = coordinate::from_uncrush(endx, endy);
+
+	start = start;//TODO
+	end = end;
 
 	
 }
