@@ -20,24 +20,24 @@ model * model::get_instance(void)
 
 int model::get_player_score(int playernum) const
 {
-	const player* player = get_player(playernum);
-	if(player == nullptr) {
-		return EOF;
-	}
-	return player->get_total_score();
+    if(active_players.first == playernum) return top_score;
+    if(active_players.second == playernum) return bottom_score;
+    return 0;
 }
 
 void model::start_game(int plr1, int plr2)
 {
-	coordinate test_coord = coordinate::from_crush(3, 5);
+/*	coordinate test_coord = coordinate::from_crush(3, 5);
 	std::pair<int, int> cr = test_coord.get_crush();
 	std::pair<int, int> uncr = test_coord.get_uncrush();
 
 	std::cout << "starting(from crushed): x" << 3 << " y" << 5 << "\n";
 	std::cout << "crushed:   x" << cr.first << " y" << cr.second << "\n";
-	std::cout << "uncrushed: x" << uncr.first << " y" << uncr.second << "\n";
-
+	std::cout << "uncrushed: x" << uncr.first << " y" << uncr.second << "\n";*/
+    top_score = 12;
+    bottom_score = 12;
 	active_players.first = plr1;
+    current_player = plr1;
 	active_players.second = plr2;
 	
 	current_player = active_players.first;
@@ -45,7 +45,9 @@ void model::start_game(int plr1, int plr2)
 
 int model::get_winner()
 {
-    return EOF;
+    if (top_score == 0) return active_players.second;
+    if (bottom_score == 0) return active_players.first;
+    return -1;
 }
 
 std::string model::get_player_name(int id)
@@ -84,6 +86,10 @@ char model::get_token(int x ,int y)
 void model::make_move(int playernum,
         int startx, int starty, int endx, int endy)
 {
+    coordiate start = coordinate::from_uncrush(startx, starty);
+    coordiate end = coordinate::from_uncrush(endx, endy);
+    board[i][j] = std::make_unique<piece::game_piece>(
+                        piece::man(coord, true));
 }
 
 void model::add_player(const std::string& p)
@@ -105,7 +111,7 @@ bool model::player_exists(const std::string& pname)
 
 int model::get_current_player(void)
 {
-    return EOF;
+    return current_player;
 }
 
 std::map<int, std::string> model::get_player_list(void) 

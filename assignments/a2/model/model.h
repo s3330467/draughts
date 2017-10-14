@@ -28,7 +28,7 @@ namespace draughts
             int next_player_id = 0;
 
 			std::pair<int, int> active_players;
-			int current_player;
+            int current_player, top_score, bottom_score;
 
             model(void);
             bool player_exists(const std::string&);
