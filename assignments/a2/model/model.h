@@ -28,6 +28,7 @@ namespace draughts
             int next_player_id = 0;
 
 			std::pair<int, int> active_players;
+			int current_player;
 
             model(void);
             bool player_exists(const std::string&);
@@ -50,7 +51,25 @@ namespace draughts
             virtual ~model(void);
 
 			private:
-			int get_player(piece::game_piece *piece);
+			const player* get_player(piece::game_piece *piece) const;
+			/**
+			 * gets player id
+			 *
+			 * @param int id: id of the player you want
+			 *
+			 * @return const player* the player you wanted
+			 * @return nullptr if the player is not found
+			 */
+			const player* get_player(int) const;
+			/**
+			 * gets player id
+			 *
+			 * @param string name: id of the player you want
+			 *
+			 * @return const player* the player you wanted
+			 * @return nullptr if the player is not found
+			 */
+			const player* get_player(std::string) const;
         };
     }
 }

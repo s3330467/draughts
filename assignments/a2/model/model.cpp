@@ -20,14 +20,11 @@ model * model::get_instance(void)
 
 int model::get_player_score(int playernum) const
 {
-	for(auto it = player_list.begin(); it != player_list.end(); it++) {
-		const player *current = it->get();
-		if(current->get_id() == playernum) {
-			return current->get_total_score();
-		}
+	const player* player = get_player(playernum);
+	if(player == nullptr) {
+		return EOF;
 	}
-	//playernum is not in the list
-    return EOF;
+	return player->get_total_score();
 }
 
 void model::start_game(int plr1, int plr2)
@@ -42,6 +39,8 @@ void model::start_game(int plr1, int plr2)
 
 	active_players.first = plr1;
 	active_players.second = plr2;
+	
+	current_player = active_players.first;
 }
 
 int model::get_winner()
@@ -51,13 +50,11 @@ int model::get_winner()
 
 std::string model::get_player_name(int id)
 {
-    for(unsigned int i = 0; i < player_list.size(); i++){
-        player* player = player_list.at(i).get();
-        if(player->get_id() == (int)i){
-            return player->get_player_name();
-        }
-    }
-    return "";
+	const player* player = get_player(id);
+	if(player == nullptr) {
+		return "";
+	}
+	return player->get_player_name();
 }
 
 char model::get_token(int x ,int y)
@@ -117,9 +114,9 @@ std::map<int, std::string> model::get_player_list(void)
     std::map<int, std::string> nameslist;
     auto this_model = get_instance();
     for(unsigned int i = 0; i < this_model->player_list.size(); i++) {
-        player* player = this_model->player_list.at(i).get();
+        const player* player = this_model->player_list.at(i).get();
         std::string player_name = player->get_player_name();
-        nameslist[(int)i] = player_name;
+        nameslist[static_cast<int>(i)] = player_name;
     }
     return nameslist;
 }
@@ -144,10 +141,30 @@ model::~model(void)
 {
 }
 
-int model::get_player(piece::game_piece *piece) {
+const player* model::get_player(piece::game_piece *piece) const {
 	if(piece->get_is_top()) {
-		return active_players.first;
+		return get_player(active_players.first);
 	} else {
-		return active_players.second;
+		return get_player(active_players.second);
 	}
+}
+
+const player* model::get_player(int id) const {
+	for(auto it = player_list.begin(); it != player_list.end(); it++) {
+		const player *player = it->get();
+		if(id == player->get_id()) {
+			return player;
+		}
+	}
+	return nullptr;
+}
+
+const player* model::get_player(std::string name) const {
+	for(auto it = player_list.begin(); it != player_list.end(); it++) {
+		const player *player = it->get();
+		if(name == player->get_player_name()) {
+			return player;
+		}
+	}
+	return nullptr;
 }
