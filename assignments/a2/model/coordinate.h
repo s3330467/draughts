@@ -13,6 +13,8 @@ namespace draughts {
 			coordinate(int x, int y) : x(x), y(y) {}
 
 			public:
+			coordinate(void) : x(-1), y(-1) {}
+
 			static coordinate from_crush(int x, int y) {
 				return coordinate(x, y);
 			}

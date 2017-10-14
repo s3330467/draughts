@@ -40,20 +40,20 @@ const piece::game_piece * game_board::get_piece(coordinate coord) const {
 }
 
 int game_board::make_move(coordinate from, coordinate to) {
-	const game_piece *curr = get_piece(from);
+	const piece::game_piece *curr = get_piece(from);
 	if(curr == nullptr) {
 		//TODO: make the user try their turn again
 		return EOF;
 	}
 
 	switch(curr->is_valid(to)) {
-		case piece::game_piece::VALID:
+		case move::VALID:
 			//TODO
 			break;
-		case piece::game_piece::VALID_ATTACK:
+		case move::VALID_ATTACK:
 			//TODO
 			break;
-		case piece::game_piece::INVALID:
+		case move::INVALID:
 			//TODO: make the user try their turn again
 			return EOF;
 	}

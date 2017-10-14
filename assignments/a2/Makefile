@@ -6,7 +6,7 @@ CONTFILES=nc_controller/command.cpp nc_controller/controller.cpp
 
 SOURCES=main_noncurses.cpp $(NCFILES) $(CONTFILES) $(MODELFILES)
 OBJECTS=$(SOURCES:.cpp=.o)
-HEADERS=$(SOURCES:.cpp=.h) direction.h
+HEADERS=$(SOURCES:.cpp=.h) model/move.h direction.h
 DFILES=$(SOURCES:.cpp=.d)
 PROGRAM=a.out
 DFILERULES=-MMD -MP
