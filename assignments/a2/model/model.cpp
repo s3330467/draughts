@@ -18,8 +18,15 @@ model * model::get_instance(void)
     return instance.get();    
 }
 
-int model::get_player_score(int playernum)
+int model::get_player_score(int playernum) const
 {
+	for(auto it = player_list.begin(); it != player_list.end(); it++) {
+		const player *current = it->get();
+		if(current->get_id() == playernum) {
+			return current->get_total_score();
+		}
+	}
+	//playernum is not in the list
     return EOF;
 }
 
@@ -84,12 +91,18 @@ void model::make_move(int playernum,
 
 void model::add_player(const std::string& p)
 {
-    std::unique_ptr<player> new_player = std::make_unique<player>(p, next_player_id++);
-    player_list.push_back(std::move(new_player));
+    //std::unique_ptr<player> new_player = std::make_unique<player>(p, next_player_id++);
+    
+    player_list.push_back(std::make_unique<player>(p, next_player_id++));
 }
 
 bool model::player_exists(const std::string& pname)
 {
+	for(auto it = player_list.begin(); it != player_list.end(); it++) {
+		if(it->get()->get_player_name() == pname) {
+			return true;
+		}
+	}
     return false;
 }
 

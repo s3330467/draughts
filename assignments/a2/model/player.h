@@ -10,9 +10,9 @@ namespace draughts {
 
 			public:
 			player(std::string player_name, int id) : player_name(player_name), id(id), total_score(0) {}
-			std::string get_player_name();
-			int get_total_score();
-			int get_id();
+			std::string get_player_name() const;
+			int get_total_score() const;
+			int get_id() const;
 		};
 	}
 }

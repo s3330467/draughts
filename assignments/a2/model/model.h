@@ -38,7 +38,7 @@ namespace draughts
             void make_move(int, int, int, int, int);
 
             void add_player(const std::string& );
-            int get_player_score(int);
+            int get_player_score(int) const;
             int get_current_player(void);
             std::string get_player_name(int);
             std::map<int, std::string> get_player_list(void) const;
