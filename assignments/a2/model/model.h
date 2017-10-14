@@ -48,6 +48,9 @@ namespace draughts
             static model * get_instance(void);
             static void delete_instance(void);
             virtual ~model(void);
+
+			private:
+			int get_player(piece::game_piece *piece);
         };
     }
 }

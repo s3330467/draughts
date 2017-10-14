@@ -131,3 +131,10 @@ model::~model(void)
 {
 }
 
+int model::get_player(piece::game_piece *piece) {
+	if(piece->get_is_top()) {
+		return active_players.first;
+	} else {
+		return active_players.second;
+	}
+}
