@@ -22,6 +22,8 @@ namespace draughts {
 			int get_y() { return y; }
 
 			piece::game_piece * get_piece(coordinate coord);
+
+			int make_move(coordinate from, coordinate to);
 		};
 	}
 }

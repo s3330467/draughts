@@ -86,8 +86,15 @@ char model::get_token(int x ,int y)
 void model::make_move(int playernum,
         int startx, int starty, int endx, int endy)
 {
+	if(playernum != current_player) {
+		//TODO: notify of wrong player?
+		return;
+	}
+
 	coordinate start = coordinate::from_uncrush(startx, starty);
     coordinate end = coordinate::from_uncrush(endx, endy);
+
+	
 }
 
 void model::add_player(const std::string& p)

@@ -10,6 +10,8 @@ namespace draughts {
 
 				public:
 					man(coordinate coords, bool is_top) : game_piece(coords, is_top) {}
+
+					bool is_valid(coordinate from, coordinate to);
 			};
 		}
 	}
