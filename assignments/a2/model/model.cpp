@@ -86,10 +86,8 @@ char model::get_token(int x ,int y)
 void model::make_move(int playernum,
         int startx, int starty, int endx, int endy)
 {
-    coordiate start = coordinate::from_uncrush(startx, starty);
-    coordiate end = coordinate::from_uncrush(endx, endy);
-    board[i][j] = std::make_unique<piece::game_piece>(
-                        piece::man(coord, true));
+	coordinate start = coordinate::from_uncrush(startx, starty);
+    coordinate end = coordinate::from_uncrush(endx, endy);
 }
 
 void model::add_player(const std::string& p)
