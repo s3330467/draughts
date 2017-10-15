@@ -86,9 +86,6 @@ std::vector<move> game_board::available_moves(bool top_player) const {
 			for(unsigned int k = 0; k < piece_moves.size(); k++){
 				//validate coordinates
 				if(!valid(piece_moves.at(k).from) || !valid(piece_moves.at(k).to)) {
-					auto fromtemp = piece_moves.at(k).from.get_crush();
-					auto totemp = piece_moves.at(k).to.get_crush();
-
 					continue;
 				}
 
@@ -99,17 +96,13 @@ std::vector<move> game_board::available_moves(bool top_player) const {
 
 					//check destination is free
 					if(get_piece(piece_moves.at(k).to)->visual() != ' ') {
-						auto temptopair = piece_moves.at(k).to.get_uncrush();
-
 						continue;
 					}
 					//check capture piece is there
 					if(capture_piece->visual() == ' ') {
-
 						continue;
 					}
 					if(capture_piece->get_is_top() == current_piece->get_is_top()) {
-
 						continue;
 					}
 					//available_moves.resize( available_moves.size() + piece_moves.size());//valiant effort, but we dont actually know how big it needs to be
@@ -122,9 +115,6 @@ std::vector<move> game_board::available_moves(bool top_player) const {
 					//auto asdf = piece_moves.at(k).to;
 					auto tempfrom = piece_moves.at(k).to;
 					if(get_piece(tempfrom)->visual() != ' ') {
-						auto tempfrompair = tempfrom.get_uncrush();
-
-
 						continue;
 					}
 					available_moves.push_back(piece_moves.at(k));

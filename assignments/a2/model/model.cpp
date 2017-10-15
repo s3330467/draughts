@@ -70,29 +70,9 @@ char model::get_token(int x ,int y)
 	return game_piece->visual();
 }
 
-void model::test_coords(int startx, int starty, int endx, int endy) {
-
-	auto st_uncr = coordinate::from_uncrush(startx, starty);
-	auto st_pair = st_uncr.get_uncrush();
-	auto st_paircr = st_uncr.get_crush();
-
-
-
-
-	auto en_uncr = coordinate::from_uncrush(endx, endy);
-	auto en_pair = en_uncr.get_uncrush();
-	auto en_paircr = en_uncr.get_crush();
-
-
-
-
-}
-
 void model::make_move(int playernum,
         int startx, int starty, int endx, int endy)
 {
-
-	test_coords(startx, starty, endx, endy);
 
 
 	bool is_player_top = true;
