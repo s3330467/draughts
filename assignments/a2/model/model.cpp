@@ -67,16 +67,7 @@ char model::get_token(int x ,int y)
 	const piece::game_piece *game_piece = board.get_piece(
 			coordinate::from_uncrush(x,y)
 			);
-
-	if(game_piece == nullptr) {
-		return ' ';
-	}
-
-    if(game_piece->get_is_top()) {
-        return 'x';
-    } else {
-        return 'o';
-    }
+	return game_piece->visual();
 }
 
 void model::test_coords(int startx, int starty, int endx, int endy) {

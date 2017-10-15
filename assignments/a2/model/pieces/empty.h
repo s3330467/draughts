@@ -6,17 +6,13 @@ namespace draughts {
 	namespace model {
 		namespace piece {
 
-			class man : public game_piece {
+			class empty : public game_piece {
 
 				public:
-					man(coordinate coords, bool is_top) : game_piece(coords, is_top) {}
+					empty(coordinate coords, bool is_top) : game_piece(coords, is_top) {}
 
 					char visual() const {
-						if(is_top) {
-							return 'x';
-						} else {
-							return 'o';
-						}
+						return ' ';
 					}
 
 					move::mtype is_valid(coordinate to) const;

@@ -19,6 +19,8 @@ namespace draughts {
 				draughts::model::coordinate get_coords() const;
 				bool get_is_top() const;
 
+				virtual char visual() const = 0;
+
 				virtual move::mtype is_valid(coordinate to) const = 0;
 				virtual std::vector<move> get_valid_moves() const = 0;
 			};

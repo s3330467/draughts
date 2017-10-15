@@ -2,6 +2,7 @@
 #include <memory>
 #include <iostream>
 
+#include "pieces/empty.h"
 #include "pieces/man_piece.h"
 #include "pieces/game_piece.h"
 #include "move.h"

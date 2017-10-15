@@ -26,7 +26,8 @@ game_board::game_board(int x, int y) : x(x), y(y) {
 
 			} else {
 				//middle, no piece
-				board[i][j] = std::unique_ptr<piece::game_piece>(nullptr);
+				board[i][j] = std::make_unique<piece::empty>(
+						piece::empty(coord, false));
 			}
 
 		}
@@ -97,12 +98,13 @@ std::vector<move> game_board::available_moves(bool top_player) const {
 					capture_piece = get_piece(capture_coords);
 
 					//check destination is free
-					if(get_piece(piece_moves.at(k).to) != nullptr) {
-						printf("%d ATT: destination not free\n", asdf);
+					if(get_piece(piece_moves.at(k).to)->visual() != ' ') {
+						auto temptopair = piece_moves.at(k).to.get_uncrush();
+						printf("%d ATT: destination not free x:%d y:%d '%c'\n", asdf, temptopair.first, temptopair.second, get_piece(piece_moves.at(k).to)->visual());
 						continue;
 					}
 					//check capture piece is there
-					if(capture_piece == nullptr) {
+					if(capture_piece->visual() == ' ') {
 						printf("%d ATT: can't capture what's not there\n", asdf);
 						continue;
 					}
@@ -118,9 +120,11 @@ std::vector<move> game_board::available_moves(bool top_player) const {
 
 				if(piece_moves.at(k).type == move::VALID && !attackmoveexists) {
 					//auto asdf = piece_moves.at(k).to;
-					auto tempfrom = piece_moves.at(k).from;
-					if(get_piece(tempfrom) != nullptr) {
-						printf("%d destination not free\n", asdf);
+					auto tempfrom = piece_moves.at(k).to;
+					if(get_piece(tempfrom)->visual() != ' ') {
+						auto tempfrompair = tempfrom.get_uncrush();
+						printf("%d destination not free x:%d y:%d\n", asdf, tempfrompair.first, tempfrompair.second);
+						//printf("%d destination not free x:%d y:%d '%c'\n", asdf, temptopair.first, temptopair.second, get_piece(piece_moves.at(k).to)->visual());
 						continue;
 					}
 					available_moves.push_back(piece_moves.at(k));
