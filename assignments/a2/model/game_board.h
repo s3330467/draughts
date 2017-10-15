@@ -23,7 +23,14 @@ namespace draughts {
 			int get_y() { return y; }
 
 			const piece::game_piece * get_piece(coordinate coord) const;
-
+			/**
+			 * make the move on the board, remove the captured piece
+			 * does't check anything
+			 *
+			 * @param move the move to make
+			 *
+			 * @return true if the player still has to make another move
+			 */
 			bool make_move(move);
 			std::vector<move> available_moves(bool) const;
 			bool can_take(coordinate piece) const;

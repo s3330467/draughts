@@ -39,10 +39,26 @@ const piece::game_piece * game_board::get_piece(coordinate coord) const {
 	return board[cr.first][cr.second].get();
 }
 
-bool game_board::make_move(move) {
-	//TODO: make the move, remove the captured piece
+bool game_board::make_move(move move) {
+	//make the move, remove the captured piece
 	//don't check anything
-	return false;
+	//return true if the player still has to make another move
+	std::pair<int, int> from_coord = move.from.get_crush();
+	std::pair<int, int> to_coord = move.to.get_crush();
+	if(move.type == move::VALID) {
+		//non attack
+		board[from_coord.first][from_coord.second].swap(board[to_coord.first][to_coord.second]);
+		return can_take(move.to);
+	} else if(move.type == move::VALID_ATTACK) {
+		//attack move
+		coordinate capturedpos = get_captured(move);
+		std::pair<int, int> captured_coord = capturedpos.get_crush();
+		board[captured_coord.first][captured_coord.second].reset(nullptr);
+		board[from_coord.first][from_coord.second].swap(board[to_coord.first][to_coord.second]);
+		return can_take(move.to);
+	} else {
+		return true;
+	}
 }
 
 std::vector<move> game_board::available_moves(bool top_player) const {
