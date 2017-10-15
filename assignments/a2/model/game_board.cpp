@@ -35,13 +35,13 @@ game_board::game_board(int x, int y) : x(x), y(y) {
 }
 
 const piece::game_piece * game_board::get_piece(coordinate coord) const {
-	//printf("starting get_piece\n");
+
 	std::pair<int, int> cr = coord.get_crush();
 
-	//printf("middle get_piece\n");
-	//printf("coords x:%d y:%d\n", cr.first, cr.second);
+
+
 	const piece::game_piece *ptr = board[cr.first][cr.second].get();
-	//printf("ending get_piece\n");
+
 	return ptr;
 }
 
@@ -65,7 +65,7 @@ bool game_board::make_move(move move) {
 }
 
 std::vector<move> game_board::available_moves(bool top_player) const {
-	//printf("starting available moves\n");
+
 	std::vector<move> available_moves;
 	std::vector<move> piece_moves;
 	const piece::game_piece *current_piece, *capture_piece;
@@ -88,7 +88,7 @@ std::vector<move> game_board::available_moves(bool top_player) const {
 				if(!valid(piece_moves.at(k).from) || !valid(piece_moves.at(k).to)) {
 					auto fromtemp = piece_moves.at(k).from.get_crush();
 					auto totemp = piece_moves.at(k).to.get_crush();
-					printf("%d not valid from'x:%d y:%d' to'x:%d y:%d'\n", asdf, fromtemp.first, fromtemp.second, totemp.first, totemp.second);
+
 					continue;
 				}
 
@@ -100,21 +100,21 @@ std::vector<move> game_board::available_moves(bool top_player) const {
 					//check destination is free
 					if(get_piece(piece_moves.at(k).to)->visual() != ' ') {
 						auto temptopair = piece_moves.at(k).to.get_uncrush();
-						printf("%d ATT: destination not free x:%d y:%d '%c'\n", asdf, temptopair.first, temptopair.second, get_piece(piece_moves.at(k).to)->visual());
+
 						continue;
 					}
 					//check capture piece is there
 					if(capture_piece->visual() == ' ') {
-						printf("%d ATT: can't capture what's not there\n", asdf);
+
 						continue;
 					}
 					if(capture_piece->get_is_top() == current_piece->get_is_top()) {
-						printf("%d ATT: can't capture your own man\n", asdf);
+
 						continue;
 					}
 					//available_moves.resize( available_moves.size() + piece_moves.size());//valiant effort, but we dont actually know how big it needs to be
 					available_moves.push_back(piece_moves.at(k));
-					printf("%d ATT: attack move added!\n", asdf);
+
 					attackmoveexists = true;
 				}
 
@@ -123,12 +123,12 @@ std::vector<move> game_board::available_moves(bool top_player) const {
 					auto tempfrom = piece_moves.at(k).to;
 					if(get_piece(tempfrom)->visual() != ' ') {
 						auto tempfrompair = tempfrom.get_uncrush();
-						printf("%d destination not free x:%d y:%d\n", asdf, tempfrompair.first, tempfrompair.second);
-						//printf("%d destination not free x:%d y:%d '%c'\n", asdf, temptopair.first, temptopair.second, get_piece(piece_moves.at(k).to)->visual());
+
+
 						continue;
 					}
 					available_moves.push_back(piece_moves.at(k));
-					printf("%d normal move added!\n", asdf);
+
 				}
 			}
 		}
@@ -146,7 +146,7 @@ std::vector<move> game_board::available_moves(bool top_player) const {
 			continue;
 		}
 	}
-	//printf("finishing available moves\n");
+
 	return available_moves;
 }
 
