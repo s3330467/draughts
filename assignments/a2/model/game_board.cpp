@@ -50,24 +50,7 @@ bool game_board::make_move(move move) {
 	if(move.type == move::VALID) {
 		//non attack
 		board[from_coord.first][from_coord.second].swap(board[to_coord.first][to_coord.second]);
-/*
-		auto attacker = board[from_coord.first][from_coord.second].release();
-		auto oldplace = board[to_coord.first][to_coord.second].release();
-		attacker->set_coords(coordinate::from_crush(to_coord.first, to_coord.second));
-		oldplace->set_coords(coordinate::from_crush(from_coord.first, from_coord.second));
 
-		board[from_coord.first][from_coord.second] = std::make_unique<piece::empty>(
-				piece::empty(oldplace->get_coords, false));
-		if(attacker->visual() == 'x' || attacker->visual() == 'o') {
-			board[to_coord.first][to_coord.second] = std::make_unique<piece::man>(
-					piece::man(attacker->get_coords, attacker->get_is_top()));
-		} else {
-			board[to_coord.first][to_coord.second] = std::make_unique<piece::king>(
-					piece::king(attacker->get_coords, attacker->get_is_top()));
-		}*/
-
-		//board[from_coord.first][from_coord.second] = std::move(oldplace);
-		//board[to_coord.first][to_coord.second] = std::move(attacker);
 		return can_take(move.to);
 	} else if(move.type == move::VALID_ATTACK) {
 		//attack move
@@ -78,14 +61,6 @@ bool game_board::make_move(move move) {
 
 
 		board[from_coord.first][from_coord.second].swap(board[to_coord.first][to_coord.second]);
-/*
-		auto attacker = board[from_coord.first][from_coord.second].release();
-		auto oldplace = board[to_coord.first][to_coord.second].release();
-		attacker->set_coords(coordinate::from_crush(to_coord.first, to_coord.second));
-		oldplace->set_coords(coordinate::from_crush(from_coord.first, from_coord.second));
-
-		board[from_coord.first][from_coord.second].reset(oldplace);
-		board[to_coord.first][to_coord.second].reset(attacker);*/
 		return can_take(move.to);
 	} else {
 		return true;
