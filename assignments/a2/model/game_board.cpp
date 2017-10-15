@@ -39,26 +39,10 @@ const piece::game_piece * game_board::get_piece(coordinate coord) const {
 	return board[cr.first][cr.second].get();
 }
 
-//TODO: this method might be deprecated
-int game_board::make_move(coordinate from, coordinate to) {
-	const piece::game_piece *curr = get_piece(from);
-	if(curr == nullptr) {
-		//TODO: make the user try their turn again
-		return EOF;
-	}
-
-	switch(curr->is_valid(to)) {
-		case move::VALID:
-			//TODO
-			break;
-		case move::VALID_ATTACK:
-			//TODO
-			break;
-		case move::INVALID:
-			//TODO: make the user try their turn again
-			return EOF;
-	}
-	return EOF;
+bool game_board::make_move(move) {
+	//TODO: make the move, remove the captured piece
+	//don't check anything
+	return false;
 }
 
 std::vector<move> game_board::available_moves(bool top_player) const {
@@ -67,8 +51,6 @@ std::vector<move> game_board::available_moves(bool top_player) const {
 	const piece::game_piece *current_piece, *capture_piece;
 	coordinate capture_coords;
 	bool attackmoveexists = false;
-	int capture_dx, capture_dy;
-
 
 	for(unsigned int i = 0; i < board.size(); i++) {//iterate through board in x direciton
 
@@ -79,15 +61,10 @@ std::vector<move> game_board::available_moves(bool top_player) const {
 			piece_moves = current_piece->get_valid_moves();
 
 			for(unsigned int k = 0; k < piece_moves.size(); k++){
-				std::pair<int, int> fromcoords = piece_moves.at(k).from.get_uncrush();
-				std::pair<int, int> tocoords = piece_moves.at(k).to.get_uncrush();
-				int dx = tocoords.first - fromcoords.first;
-				int dy = tocoords.second - fromcoords.second;
 				if(piece_moves.at(k).type == move::VALID_ATTACK){
 					attackmoveexists = true;
-					capture_dx = dx/2;
-					capture_dy = dy/2;
-					capture_coords = coordinate::from_uncrush((fromcoords.first+capture_dx),(fromcoords.second+capture_dy));
+
+					coordinate capture_coords = get_captured(piece_moves.at(k));
 					capture_piece = get_piece(capture_coords);
 
 					//check destination is free
@@ -133,11 +110,7 @@ bool game_board::can_take(coordinate piece_coord) const {
 		if(it->type != move::VALID_ATTACK) continue;//dont do non-attack
 		if(get_piece(it->to) != nullptr) continue;//dont do if there is a piece at destination
 
-		auto to_coord = it->to.get_uncrush();
-		auto from_coord = it->from.get_uncrush();
-		int dx = to_coord.first - from_coord.first;
-		int dy = to_coord.second - from_coord.second;
-		coordinate capture_pos = coordinate::from_uncrush(from_coord.first + dx, from_coord.second + dy);
+		coordinate capture_pos = get_captured(*it);
 		const piece::game_piece *capture = get_piece(capture_pos);
 
 		//if they are on opposite teams, return true
@@ -145,4 +118,18 @@ bool game_board::can_take(coordinate piece_coord) const {
 	}
 	//no valid attack move, return false
 	return false;
+}
+
+coordinate game_board::get_captured(move move) {
+	if(move.type != move::VALID_ATTACK) {
+		return coordinate::from_uncrush(-1, -1);
+	}
+
+	auto to_coord = move.to.get_uncrush();
+	auto from_coord = move.from.get_uncrush();
+	int dx = to_coord.first - from_coord.first;
+	int dy = to_coord.second - from_coord.second;
+	coordinate capture_pos = coordinate::from_uncrush(from_coord.first + dx, from_coord.second + dy);
+
+	return capture_pos;
 }

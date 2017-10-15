@@ -24,9 +24,10 @@ namespace draughts {
 
 			const piece::game_piece * get_piece(coordinate coord) const;
 
-			int make_move(coordinate from, coordinate to);//possible depricated
+			bool make_move(move);
 			std::vector<move> available_moves(bool) const;
 			bool can_take(coordinate piece) const;
+			static coordinate get_captured(move);
 		};
 	}
 }
