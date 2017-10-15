@@ -13,9 +13,9 @@ model * model::get_instance(void)
 {
     if(instance == nullptr)
     {
-        instance = std::unique_ptr<model>(new model);	
+        instance = std::unique_ptr<model>(new model);
     }
-    return instance.get();    
+    return instance.get();
 }
 
 int model::get_player_score(int playernum) const
@@ -60,7 +60,7 @@ std::string model::get_player_name(int id)
 
 char model::get_token(int x ,int y)
 {
-    if(coordinate::is_valid(x,y)){
+    if(!coordinate::is_valid(x,y)){
         return ' ';
     }
 
@@ -79,27 +79,29 @@ char model::get_token(int x ,int y)
     }
 }
 
-void model::make_move(int playernum,
-        int startx, int starty, int endx, int endy)
-{
-
+void model::test_coords(int startx, int starty, int endx, int endy) {
 	printf("testing coordinates\n");
 	auto st_uncr = coordinate::from_uncrush(startx, starty);
 	auto st_pair = st_uncr.get_uncrush();
 	auto st_paircr = st_uncr.get_crush();
 	printf("uncr x:%d y:%d\n", startx, starty);
 	printf("uncr x:%d y:%d\n", st_pair.first, st_pair.second);
-	printf("uncr x:%d y:%d\n", st_paircr.first, st_paircr.second);
+	printf("cr x:%d y:%d\n", st_paircr.first, st_paircr.second);
 
 	auto en_uncr = coordinate::from_uncrush(endx, endy);
 	auto en_pair = en_uncr.get_uncrush();
 	auto en_paircr = en_uncr.get_crush();
 	printf("uncr x:%d y:%d\n", endx, endy);
 	printf("uncr x:%d y:%d\n", en_pair.first, en_pair.second);
-	printf("uncr x:%d y:%d\n", en_paircr.first, en_paircr.second);
-
-
+	printf("cr x:%d y:%d\n", en_paircr.first, en_paircr.second);
 	printf("\\testing coordinates\n");
+}
+
+void model::make_move(int playernum,
+        int startx, int starty, int endx, int endy)
+{
+
+	test_coords(startx, starty, endx, endy);
 
 
 	bool is_player_top = true;
@@ -122,6 +124,7 @@ void model::make_move(int playernum,
 
 	//get valid moves for that player
 	std::vector<move> valid_moves = board.available_moves(is_player_top);
+	printf("valid moves: %d\n", static_cast<int>(valid_moves.size()));
 	//check find the valid move in the list
 	printf("finding the valid move in the list:\n");
 	bool found = false;

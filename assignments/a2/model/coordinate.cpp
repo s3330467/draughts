@@ -14,19 +14,21 @@ std::pair<int, int> coordinate::get_uncrush() const {
 		newx++;
 	}
 	//pauls code has x and y swapped and indices starts at 1
-	return std::make_pair(y+1, newx+1);
+	return std::make_pair(x+1, y+1);
+	//return std::make_pair(newx+1, y+1);
 }
 
 bool coordinate::is_valid(int x, int y) {
-	x -= 1;
+	return true;
+	/*x -= 1;
 	y -= 1;
 	if(y%2 == 0) {
 		//x should be odd
-		return x%2 != 0;
+		return x%2 == 0;
 	} else {
 		//x should be even
-		return x%2 == 0;
-	}
+		return x%2 != 0;
+	}*/
 }
 
 bool coordinate::check_valid() {

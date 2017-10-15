@@ -14,12 +14,12 @@ game_board::game_board(int x, int y) : x(x), y(y) {
 		for(unsigned int j = 0; j < board[i].size(); j++) {//iterate through board in y direction (the column we just added)
 			coordinate coord = coordinate::from_crush(i, j);
 
-			if(j < static_cast<unsigned int>(y/2 - 1)) {
+			if(j < static_cast<unsigned int>(y/2 - 1) && j%2 == i%2) {
 				//top, player 1
 				board[i][j] = std::make_unique<piece::man>(
 						piece::man(coord, true));
 
-			} else if(j > static_cast<unsigned int>(y/2)) {
+			} else if(j > static_cast<unsigned int>(y/2) && j%2 == i%2) {
 				//bottom, player 2
 				board[i][j] = std::make_unique<piece::man>(
 						piece::man(coord, false));
@@ -70,53 +70,61 @@ std::vector<move> game_board::available_moves(bool top_player) const {
 	const piece::game_piece *current_piece, *capture_piece;
 	coordinate capture_coords;
 	bool attackmoveexists = false;
+	int asdf = 0;
 
-	//printf("---\n");
 	for(unsigned int i = 0; i < board.size(); i++) {//iterate through board in x direciton
-	//printf("|||\n");
 
 		for(unsigned int j = 0; j < board[i].size(); j++) {//iterate through board in y direction (the column we just added)
 			coordinate coord = coordinate::from_crush(i, j);
 			current_piece = get_piece(coord);
-	//printf("---\n");
 			if(current_piece == nullptr) continue;
-	//printf("---\n");
 			if(current_piece->get_is_top() != top_player) continue;//check current player ownes this piece
-	//printf("---\n");
 			piece_moves = current_piece->get_valid_moves();
-	//printf("---\n");
 
+					asdf++;
 			for(unsigned int k = 0; k < piece_moves.size(); k++){
-	//printf("-|-\n");
 				//validate coordinates
-				if(!valid(piece_moves.at(k).from) || !valid(piece_moves.at(k).to)) continue;
+				if(!valid(piece_moves.at(k).from) || !valid(piece_moves.at(k).to)) {
+					auto fromtemp = piece_moves.at(k).from.get_crush();
+					auto totemp = piece_moves.at(k).to.get_crush();
+					printf("%d not valid from'x:%d y:%d' to'x:%d y:%d'\n", asdf, fromtemp.first, fromtemp.second, totemp.first, totemp.second);
+					continue;
+				}
 
 				if(piece_moves.at(k).type == move::VALID_ATTACK){
-	//printf("-a-\n");
-					attackmoveexists = true;
 
 					coordinate capture_coords = get_captured(piece_moves.at(k));
 					capture_piece = get_piece(capture_coords);
 
 					//check destination is free
-					if(get_piece(piece_moves.at(k).to) != nullptr) continue;
+					if(get_piece(piece_moves.at(k).to) != nullptr) {
+						printf("%d ATT: destination not free\n", asdf);
+						continue;
+					}
 					//check capture piece is there
-					if(capture_piece == nullptr) continue;
-					if(capture_piece->get_is_top() == current_piece->get_is_top()) continue;
+					if(capture_piece == nullptr) {
+						printf("%d ATT: can't capture what's not there\n", asdf);
+						continue;
+					}
+					if(capture_piece->get_is_top() == current_piece->get_is_top()) {
+						printf("%d ATT: can't capture your own man\n", asdf);
+						continue;
+					}
 					//available_moves.resize( available_moves.size() + piece_moves.size());//valiant effort, but we dont actually know how big it needs to be
 					available_moves.push_back(piece_moves.at(k));
-	//printf("\\a-\n");
+					printf("%d ATT: attack move added!\n", asdf);
+					attackmoveexists = true;
 				}
-				//TODO: the list of available moves would probably good to have as globals, that the model can access.
+
 				if(piece_moves.at(k).type == move::VALID && !attackmoveexists) {
-	//printf("-b-\n");
 					//auto asdf = piece_moves.at(k).to;
-					auto asdf = piece_moves.at(k).from;
-	//printf("_b-\n");
-					if(get_piece(asdf) != nullptr) continue;
-	//printf("_b-\n");
+					auto tempfrom = piece_moves.at(k).from;
+					if(get_piece(tempfrom) != nullptr) {
+						printf("%d destination not free\n", asdf);
+						continue;
+					}
 					available_moves.push_back(piece_moves.at(k));
-	//printf("\\b-\n");
+					printf("%d normal move added!\n", asdf);
 				}
 			}
 		}

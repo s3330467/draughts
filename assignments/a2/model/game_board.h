@@ -1,5 +1,6 @@
 #include <vector>
 #include <memory>
+#include <iostream>
 
 #include "pieces/man_piece.h"
 #include "pieces/game_piece.h"

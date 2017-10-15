@@ -20,8 +20,9 @@ namespace draughts {
 			}
 
 			//pauls code has x and y swapped and indices start at 1
-			static coordinate from_uncrush(int y, int x) {
-				return coordinate((x-1)/2, y-1);
+			static coordinate from_uncrush(int x, int y) {
+				//return coordinate((x-1)/2, y-1);
+				return coordinate(x-1, y-1);
 			}
 
 			std::pair<int, int> get_crush() const;

@@ -34,6 +34,8 @@ namespace draughts
             bool player_exists(const std::string&);
 
             public:
+			void test_coords(int, int, int, int);
+
             void start_game(int, int);
             char get_token(int, int);
             void make_move(int, int, int, int, int);
