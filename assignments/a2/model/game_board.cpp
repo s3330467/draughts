@@ -7,11 +7,11 @@ using namespace model;
 game_board::game_board(int x, int y) : x(x), y(y) {
 	board = std::vector<std::vector<std::unique_ptr<piece::game_piece>>>(x);
 
-	for(unsigned int i = 0; i < board.size(); i++) {//itterate through board in x direciton
+	for(unsigned int i = 0; i < board.size(); i++) {//iterate through board in x direciton
 
 		board[i] = std::vector<std::unique_ptr<piece::game_piece>>(y);//add column
 
-		for(unsigned int j = 0; j < board[i].size(); j++) {//itterate through board in y direction (the column we just added)
+		for(unsigned int j = 0; j < board[i].size(); j++) {//iterate through board in y direction (the column we just added)
 			coordinate coord = coordinate::from_crush(i, j);
 
 			if(j < static_cast<unsigned int>(y/2 - 1)) {
@@ -60,7 +60,7 @@ int game_board::make_move(coordinate from, coordinate to) {
 	return EOF;
 }
 
-std::vector<move> game_board::available_moves(int player_id) {
+std::vector<move> game_board::available_moves(bool top_player) {
 	std::vector<move> available_moves;
 	std::vector<move> piece_moves;
 	const piece::game_piece *current_piece, *capture_piece;
@@ -69,14 +69,13 @@ std::vector<move> game_board::available_moves(int player_id) {
 	int capture_dx, capture_dy;
 
 
-	for(unsigned int i = 0; i < board.size(); i++) {//itterate through board in x direciton
+	for(unsigned int i = 0; i < board.size(); i++) {//iterate through board in x direciton
 
-		for(unsigned int j = 0; j < board[i].size(); j++) {//itterate through board in y direction (the column we just added)
+		for(unsigned int j = 0; j < board[i].size(); j++) {//iterate through board in y direction (the column we just added)
 			coordinate coord = coordinate::from_crush(i, j);
 			current_piece = get_piece(coord);
+			if(current_piece->get_is_top() != top_player) continue;//check current player ownes this piece
 			piece_moves = current_piece->get_valid_moves();
-
-			//TODO check which player is having their moves checks, right now it checks all the pieces
 
 			for(unsigned int k = 0; k < piece_moves.size(); k++){
 				std::pair<int, int> fromcoords = piece_moves.at(k).from.get_uncrush();
@@ -107,7 +106,17 @@ std::vector<move> game_board::available_moves(int player_id) {
 		}
 	}
 	if(attackmoveexists){
-		//TODO remove any non-attack moves that were added prior to the attack being found
+		//remove any non-attack moves that were added prior to the attack being found
+		auto it = available_moves.begin();
+		while(it != available_moves.end()) {
+			if(it->type == move::VALID_ATTACK) {
+				//no non-attack moves after the first attack move
+				break;
+			}
+			//remove the move
+			it = available_moves.erase(it);//this increments the iterator
+			continue;
+		}
 	}
 	return available_moves;
 }
