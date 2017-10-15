@@ -39,6 +39,7 @@ const piece::game_piece * game_board::get_piece(coordinate coord) const {
 	return board[cr.first][cr.second].get();
 }
 
+//TODO: this method might be deprecated
 int game_board::make_move(coordinate from, coordinate to) {
 	const piece::game_piece *curr = get_piece(from);
 	if(curr == nullptr) {
@@ -60,7 +61,7 @@ int game_board::make_move(coordinate from, coordinate to) {
 	return EOF;
 }
 
-std::vector<move> game_board::available_moves(bool top_player) {
+std::vector<move> game_board::available_moves(bool top_player) const {
 	std::vector<move> available_moves;
 	std::vector<move> piece_moves;
 	const piece::game_piece *current_piece, *capture_piece;
@@ -119,4 +120,29 @@ std::vector<move> game_board::available_moves(bool top_player) {
 		}
 	}
 	return available_moves;
+}
+
+bool game_board::can_take(coordinate piece_coord) const {
+	const piece::game_piece *piece = get_piece(piece_coord);
+
+	if(piece == nullptr) return false;
+	std::vector<move> piece_moves = piece->get_valid_moves();
+
+	for(auto it = piece_moves.begin(); it != piece_moves.end(); it++) {
+		
+		if(it->type != move::VALID_ATTACK) continue;//dont do non-attack
+		if(get_piece(it->to) != nullptr) continue;//dont do if there is a piece at destination
+
+		auto to_coord = it->to.get_uncrush();
+		auto from_coord = it->from.get_uncrush();
+		int dx = to_coord.first - from_coord.first;
+		int dy = to_coord.second - from_coord.second;
+		coordinate capture_pos = coordinate::from_uncrush(from_coord.first + dx, from_coord.second + dy);
+		const piece::game_piece *capture = get_piece(capture_pos);
+
+		//if they are on opposite teams, return true
+		if(capture->get_is_top() != piece->get_is_top()) return true;
+	}
+	//no valid attack move, return false
+	return false;
 }
