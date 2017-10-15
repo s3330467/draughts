@@ -35,6 +35,15 @@ namespace draughts {
 			std::vector<move> available_moves(bool) const;
 			bool can_take(coordinate piece) const;
 			static coordinate get_captured(move);
+
+			bool valid(coordinate coords) const {
+				auto pair = coords.get_crush();
+				bool xlow = pair.first >= 0;
+				bool ylow = pair.second >= 0;
+				bool xhigh = pair.first < x;
+				bool yhigh = pair.second < y;
+				return xlow && ylow && xhigh && yhigh;
+			}
 		};
 	}
 }

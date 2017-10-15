@@ -34,15 +34,17 @@ game_board::game_board(int x, int y) : x(x), y(y) {
 }
 
 const piece::game_piece * game_board::get_piece(coordinate coord) const {
+	//printf("starting get_piece\n");
 	std::pair<int, int> cr = coord.get_crush();
 
-	return board[cr.first][cr.second].get();
+	//printf("middle get_piece\n");
+	//printf("coords x:%d y:%d\n", cr.first, cr.second);
+	const piece::game_piece *ptr = board[cr.first][cr.second].get();
+	//printf("ending get_piece\n");
+	return ptr;
 }
 
 bool game_board::make_move(move move) {
-	//make the move, remove the captured piece
-	//don't check anything
-	//return true if the player still has to make another move
 	std::pair<int, int> from_coord = move.from.get_crush();
 	std::pair<int, int> to_coord = move.to.get_crush();
 	if(move.type == move::VALID) {
@@ -62,22 +64,35 @@ bool game_board::make_move(move move) {
 }
 
 std::vector<move> game_board::available_moves(bool top_player) const {
+	//printf("starting available moves\n");
 	std::vector<move> available_moves;
 	std::vector<move> piece_moves;
 	const piece::game_piece *current_piece, *capture_piece;
 	coordinate capture_coords;
 	bool attackmoveexists = false;
 
+	//printf("---\n");
 	for(unsigned int i = 0; i < board.size(); i++) {//iterate through board in x direciton
+	//printf("|||\n");
 
 		for(unsigned int j = 0; j < board[i].size(); j++) {//iterate through board in y direction (the column we just added)
 			coordinate coord = coordinate::from_crush(i, j);
 			current_piece = get_piece(coord);
+	//printf("---\n");
+			if(current_piece == nullptr) continue;
+	//printf("---\n");
 			if(current_piece->get_is_top() != top_player) continue;//check current player ownes this piece
+	//printf("---\n");
 			piece_moves = current_piece->get_valid_moves();
+	//printf("---\n");
 
 			for(unsigned int k = 0; k < piece_moves.size(); k++){
+	//printf("-|-\n");
+				//validate coordinates
+				if(!valid(piece_moves.at(k).from) || !valid(piece_moves.at(k).to)) continue;
+
 				if(piece_moves.at(k).type == move::VALID_ATTACK){
+	//printf("-a-\n");
 					attackmoveexists = true;
 
 					coordinate capture_coords = get_captured(piece_moves.at(k));
@@ -90,11 +105,18 @@ std::vector<move> game_board::available_moves(bool top_player) const {
 					if(capture_piece->get_is_top() == current_piece->get_is_top()) continue;
 					//available_moves.resize( available_moves.size() + piece_moves.size());//valiant effort, but we dont actually know how big it needs to be
 					available_moves.push_back(piece_moves.at(k));
+	//printf("\\a-\n");
 				}
 				//TODO: the list of available moves would probably good to have as globals, that the model can access.
 				if(piece_moves.at(k).type == move::VALID && !attackmoveexists) {
-					if(get_piece(piece_moves.at(k).to) != nullptr) continue;
+	//printf("-b-\n");
+					//auto asdf = piece_moves.at(k).to;
+					auto asdf = piece_moves.at(k).from;
+	//printf("_b-\n");
+					if(get_piece(asdf) != nullptr) continue;
+	//printf("_b-\n");
 					available_moves.push_back(piece_moves.at(k));
+	//printf("\\b-\n");
 				}
 			}
 		}
@@ -112,6 +134,7 @@ std::vector<move> game_board::available_moves(bool top_player) const {
 			continue;
 		}
 	}
+	//printf("finishing available moves\n");
 	return available_moves;
 }
 

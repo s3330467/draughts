@@ -5,7 +5,7 @@ using namespace draughts::model;
 std::unique_ptr<model> model::instance =
 nullptr;
 
-model::model(void) : board(game_board(10, 10))
+model::model(void) : board(game_board(8, 8))
 {
 }
 
@@ -82,11 +82,32 @@ char model::get_token(int x ,int y)
 void model::make_move(int playernum,
         int startx, int starty, int endx, int endy)
 {
+
+	printf("testing coordinates\n");
+	auto st_uncr = coordinate::from_uncrush(startx, starty);
+	auto st_pair = st_uncr.get_uncrush();
+	auto st_paircr = st_uncr.get_crush();
+	printf("uncr x:%d y:%d\n", startx, starty);
+	printf("uncr x:%d y:%d\n", st_pair.first, st_pair.second);
+	printf("uncr x:%d y:%d\n", st_paircr.first, st_paircr.second);
+
+	auto en_uncr = coordinate::from_uncrush(endx, endy);
+	auto en_pair = en_uncr.get_uncrush();
+	auto en_paircr = en_uncr.get_crush();
+	printf("uncr x:%d y:%d\n", endx, endy);
+	printf("uncr x:%d y:%d\n", en_pair.first, en_pair.second);
+	printf("uncr x:%d y:%d\n", en_paircr.first, en_paircr.second);
+
+
+	printf("\\testing coordinates\n");
+
+
 	bool is_player_top = true;
 	if(playernum != current_player) {
 		//TODO: notify of wrong player?
 		return;
 	}
+	printf("checking playernum:\n");
 
 	//get is_player_top
 	if(playernum == active_players.first) {
@@ -97,9 +118,12 @@ void model::make_move(int playernum,
 		//TODO: notify of wrong player?
 	}
 
+	printf("getting valid moves:\n");
+
 	//get valid moves for that player
 	std::vector<move> valid_moves = board.available_moves(is_player_top);
 	//check find the valid move in the list
+	printf("finding the valid move in the list:\n");
 	bool found = false;
 	for(auto it = valid_moves.begin(); it != valid_moves.end(); it++) {
 		auto fcoord = it->from.get_uncrush();

@@ -11,7 +11,7 @@ namespace draughts {
 				coordinate to;
 				mtype type;
 
-				move(void) {}
+				move(void) : from(), to(), type(INVALID) {}
 				move(coordinate from, coordinate to, mtype type) : from(from), to(to), type(type) {}
 		};
 	}
