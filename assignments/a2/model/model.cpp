@@ -91,6 +91,19 @@ void model::make_move(int playernum,
 		return;
 	}
 
+	//get is_player_top
+	//get valid moves for that player
+	//check find the valid move in the list
+	//	-yes
+	//		make the move (from the list)
+	//		check the return value of make_move
+	//			-true
+	//				make the player take their turn again
+	//			-false
+	//				other players turn
+	//	-no
+	//		make the player take their turn again
+
 	coordinate start = coordinate::from_uncrush(startx, starty);
     coordinate end = coordinate::from_uncrush(endx, endy);
 
