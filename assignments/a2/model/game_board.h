@@ -3,6 +3,7 @@
 
 #include "pieces/man_piece.h"
 #include "pieces/game_piece.h"
+#include "move.h"
 
 #pragma once
 
@@ -24,6 +25,7 @@ namespace draughts {
 			const piece::game_piece * get_piece(coordinate coord) const;
 
 			int make_move(coordinate from, coordinate to);
+			std::vector<move> available_moves(int);
 		};
 	}
 }
