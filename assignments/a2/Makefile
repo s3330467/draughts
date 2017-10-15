@@ -24,7 +24,10 @@ $(PROGRAM): $(OBJECTS)
 	$(CC) $(LDFLAGS) -o $@ $^
 
 -include $(DFILES)
-.PHONY:clean archive debug rebuild
+.PHONY:clean archive debug rebuild run
+
+run:
+	./a.out
 
 debug:all
 debug:CFLAGS+= -fsanitize=address -g

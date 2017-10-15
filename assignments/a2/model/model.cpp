@@ -37,7 +37,6 @@ void model::start_game(int plr1, int plr2)
     top_score = 12;
     bottom_score = 12;
 	active_players.first = plr1;
-    current_player = plr1;
 	active_players.second = plr2;
 	
 	current_player = active_players.first;
@@ -61,9 +60,6 @@ std::string model::get_player_name(int id)
 
 char model::get_token(int x ,int y)
 {
-	//TODO: remove the printf
-	//printf("getting token at: x%d y%d\n", x, y);
-
     if(coordinate::is_valid(x,y)){
         return ' ';
     }
@@ -86,30 +82,57 @@ char model::get_token(int x ,int y)
 void model::make_move(int playernum,
         int startx, int starty, int endx, int endy)
 {
+	bool is_player_top = true;
 	if(playernum != current_player) {
 		//TODO: notify of wrong player?
 		return;
 	}
 
 	//get is_player_top
+	if(playernum == active_players.first) {
+		is_player_top = true;
+	} else if(playernum == active_players.second) {
+		is_player_top = false;
+	} else {
+		//TODO: notify of wrong player?
+	}
+
 	//get valid moves for that player
+	std::vector<move> valid_moves = board.available_moves(is_player_top);
 	//check find the valid move in the list
-	//	-yes
-	//		make the move (from the list)
-	//		check the return value of make_move
-	//			-true
-	//				make the player take their turn again
-	//			-false
-	//				other players turn
-	//	-no
-	//		make the player take their turn again
+	bool found = false;
+	for(auto it = valid_moves.begin(); it != valid_moves.end(); it++) {
+		auto fcoord = it->from.get_uncrush();
+		auto tcoord = it->to.get_uncrush();
 
-	coordinate start = coordinate::from_uncrush(startx, starty);
-    coordinate end = coordinate::from_uncrush(endx, endy);
+		if(fcoord.first != startx) continue;
+		if(fcoord.second != starty) continue;
+		if(tcoord.first != endx) continue;
+		if(tcoord.second != endy) continue;
 
-	start = start;//TODO
-	end = end;
+		//	-yes
+		//		make the move (from the list)
+		//		check the return value of make_move
+		if(board.make_move(*it)) {
+			//			-true
+			//				make the player take their turn again
+		} else {
+			//			-false
+			//				other players turn
+			if(is_player_top) {
+				current_player = active_players.second;
+			} else {
+				current_player = active_players.first;
+			}
+		}
 
+		break;
+	}
+
+	if(!found) {
+		//	-no
+		//		make the player take their turn again
+	}
 	
 }
 
