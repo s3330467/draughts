@@ -12,22 +12,21 @@ game_board::game_board(int x, int y) : x(x), y(y) {
 		board[i] = std::vector<std::unique_ptr<piece::game_piece>>(y);//add column
 
 		for(unsigned int j = 0; j < board[i].size(); j++) {//iterate through board in y direction (the column we just added)
-			coordinate coord = coordinate::from_crush(i, j);
 
 			if(j < static_cast<unsigned int>(y/2 - 1) && j%2 == i%2) {
 				//top, player 1
 				board[i][j] = std::make_unique<piece::man>(
-						piece::man(coord, true));
+						piece::man(true));
 
 			} else if(j > static_cast<unsigned int>(y/2) && j%2 == i%2) {
 				//bottom, player 2
 				board[i][j] = std::make_unique<piece::man>(
-						piece::man(coord, false));
+						piece::man(false));
 
 			} else {
 				//middle, no piece
 				board[i][j] = std::make_unique<piece::empty>(
-						piece::empty(coord, false));
+						piece::empty(false));
 			}
 
 		}
@@ -51,13 +50,42 @@ bool game_board::make_move(move move) {
 	if(move.type == move::VALID) {
 		//non attack
 		board[from_coord.first][from_coord.second].swap(board[to_coord.first][to_coord.second]);
+/*
+		auto attacker = board[from_coord.first][from_coord.second].release();
+		auto oldplace = board[to_coord.first][to_coord.second].release();
+		attacker->set_coords(coordinate::from_crush(to_coord.first, to_coord.second));
+		oldplace->set_coords(coordinate::from_crush(from_coord.first, from_coord.second));
+
+		board[from_coord.first][from_coord.second] = std::make_unique<piece::empty>(
+				piece::empty(oldplace->get_coords, false));
+		if(attacker->visual() == 'x' || attacker->visual() == 'o') {
+			board[to_coord.first][to_coord.second] = std::make_unique<piece::man>(
+					piece::man(attacker->get_coords, attacker->get_is_top()));
+		} else {
+			board[to_coord.first][to_coord.second] = std::make_unique<piece::king>(
+					piece::king(attacker->get_coords, attacker->get_is_top()));
+		}*/
+
+		//board[from_coord.first][from_coord.second] = std::move(oldplace);
+		//board[to_coord.first][to_coord.second] = std::move(attacker);
 		return can_take(move.to);
 	} else if(move.type == move::VALID_ATTACK) {
 		//attack move
 		coordinate capturedpos = get_captured(move);
 		std::pair<int, int> captured_coord = capturedpos.get_crush();
-		board[captured_coord.first][captured_coord.second].reset(nullptr);
+		board[captured_coord.first][captured_coord.second].reset();
+		board[captured_coord.first][captured_coord.second] = std::make_unique<piece::empty>(piece::empty(false));
+
+
 		board[from_coord.first][from_coord.second].swap(board[to_coord.first][to_coord.second]);
+/*
+		auto attacker = board[from_coord.first][from_coord.second].release();
+		auto oldplace = board[to_coord.first][to_coord.second].release();
+		attacker->set_coords(coordinate::from_crush(to_coord.first, to_coord.second));
+		oldplace->set_coords(coordinate::from_crush(from_coord.first, from_coord.second));
+
+		board[from_coord.first][from_coord.second].reset(oldplace);
+		board[to_coord.first][to_coord.second].reset(attacker);*/
 		return can_take(move.to);
 	} else {
 		return true;
@@ -80,7 +108,7 @@ std::vector<move> game_board::available_moves(bool top_player) const {
 			current_piece = get_piece(coord);
 			if(current_piece == nullptr) continue;
 			if(current_piece->get_is_top() != top_player) continue;//check current player ownes this piece
-			piece_moves = current_piece->get_valid_moves();
+			piece_moves = current_piece->get_valid_moves(coord);
 
 					asdf++;
 			for(unsigned int k = 0; k < piece_moves.size(); k++){
@@ -153,13 +181,13 @@ std::vector<move> game_board::available_moves(bool top_player) const {
 bool game_board::can_take(coordinate piece_coord) const {
 	const piece::game_piece *piece = get_piece(piece_coord);
 
-	if(piece == nullptr) return false;
-	std::vector<move> piece_moves = piece->get_valid_moves();
+	if(piece == nullptr || piece->visual() == ' ') return false;
+	std::vector<move> piece_moves = piece->get_valid_moves(piece_coord);
 
 	for(auto it = piece_moves.begin(); it != piece_moves.end(); it++) {
 		
 		if(it->type != move::VALID_ATTACK) continue;//dont do non-attack
-		if(get_piece(it->to) != nullptr) continue;//dont do if there is a piece at destination
+		if(get_piece(it->to) != nullptr && get_piece(it->to)->visual() != ' ') continue;//dont do if there is a piece at destination
 
 		coordinate capture_pos = get_captured(*it);
 		const piece::game_piece *capture = get_piece(capture_pos);
