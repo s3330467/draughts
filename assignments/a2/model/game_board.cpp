@@ -6,6 +6,8 @@ using namespace model;
 
 game_board::game_board(int x, int y) : x(x), y(y) {
 	board = std::vector<std::vector<std::unique_ptr<piece::game_piece>>>(x);
+	top_score = 0;
+	bottom_score = 0;
 
 	for(unsigned int i = 0; i < board.size(); i++) {//iterate through board in x direciton
 
@@ -17,11 +19,13 @@ game_board::game_board(int x, int y) : x(x), y(y) {
 				//top, player 1
 				board[i][j] = std::make_unique<piece::man>(
 						piece::man(true));
+				top_score++;
 
 			} else if(j > static_cast<unsigned int>(y/2) && j%2 == i%2) {
 				//bottom, player 2
 				board[i][j] = std::make_unique<piece::man>(
 						piece::man(false));
+				bottom_score++;
 
 			} else {
 				//middle, no piece
@@ -48,6 +52,11 @@ bool game_board::make_move(move move) {
 		//non attack
 		board[from_coord.first][from_coord.second].swap(board[to_coord.first][to_coord.second]);
 
+		bool is_top = board[to_coord.first][to_coord.second].get()->get_is_top();
+		if((!is_top && to_coord.second == 0) || (is_top && to_coord.second == y-1)) {
+			board[to_coord.first][to_coord.second].reset();
+			board[to_coord.first][to_coord.second] = std::make_unique<piece::king>(piece::king(is_top));
+		}
 		return false;
 	} else if(move.type == move::VALID_ATTACK) {
 		//attack move
@@ -56,8 +65,19 @@ bool game_board::make_move(move move) {
 		board[captured_coord.first][captured_coord.second].reset();
 		board[captured_coord.first][captured_coord.second] = std::make_unique<piece::empty>(piece::empty(false));
 
-
 		board[from_coord.first][from_coord.second].swap(board[to_coord.first][to_coord.second]);
+
+		bool is_top = board[to_coord.first][to_coord.second].get()->get_is_top();
+		if(is_top) {
+			bottom_score--;
+		} else {
+			top_score--;
+		}
+
+		if((!is_top && to_coord.second == 0) || (is_top && to_coord.second == y-1)) {
+			board[to_coord.first][to_coord.second].reset();
+			board[to_coord.first][to_coord.second] = std::make_unique<piece::king>(piece::king(is_top));
+		}
 		return can_take(move.to);
 	} else {
 		return true;
@@ -179,17 +199,21 @@ std::vector<move> game_board::available_moves(bool top_player) const {
 bool game_board::can_take(coordinate *piece_coord) const {
 	const piece::game_piece *piece = get_piece(piece_coord);
 
-	if(!piece || piece->visual() == ' ') return false;
+	if(!piece) return false;
+	if(piece->visual() == ' ') return false;
 	std::vector<move> piece_moves = piece->get_valid_moves(piece_coord);
 
 	for(auto it = piece_moves.begin(); it != piece_moves.end(); it++) {
 		
 		if(it->type != move::VALID_ATTACK) continue;//dont do non-attack
-		if(get_piece(it->to) != nullptr && get_piece(it->to)->visual() != ' ') continue;//dont do if there is a piece at destination
+		auto to_piece = get_piece(it->to);
+		if(!to_piece) continue;
+		if(to_piece->visual() != ' ') continue;//dont do if there is a piece at destination
 
 		coordinate *capture_pos = get_captured(*it);
 		const piece::game_piece *capture = get_piece(capture_pos);
-		if(!capture) return false;
+		if(!capture) continue;
+		if(capture->visual() == ' ') continue;
 		//if they are on opposite teams, return true
 		if(capture->get_is_top() != piece->get_is_top()) return true;
 	}
