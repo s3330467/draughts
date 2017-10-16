@@ -17,13 +17,21 @@ namespace draughts {
 			std::vector<std::vector<std::unique_ptr<piece::game_piece>>> board;
 			int x;
 			int y;
-
+			int top_score;
+			int bottom_score; 
 
 			public:
 			game_board(int x, int y);
 
 			int get_x() { return x; }
 			int get_y() { return y; }
+
+			int get_top_score() const {
+				return top_score;
+			}
+			int get_bottom_score() const {
+				return bottom_score;
+			}
 
 void print_coords(coordinate *from, coordinate *to) const;
 void print_coords(coordinate *toprint) const;

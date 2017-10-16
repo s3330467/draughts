@@ -20,8 +20,8 @@ model * model::get_instance(void)
 
 int model::get_player_score(int playernum) const
 {
-    if(active_players.first == playernum) return top_score;
-    if(active_players.second == playernum) return bottom_score;
+    if(active_players.first == playernum) return board.get_top_score();
+    if(active_players.second == playernum) return board.get_bottom_score();
     return 0;
 }
 
@@ -34,8 +34,6 @@ void model::start_game(int plr1, int plr2)
 	std::cout << "starting(from crushed): x" << 3 << " y" << 5 << "\n";
 	std::cout << "crushed:   x" << cr.first << " y" << cr.second << "\n";
 	std::cout << "uncrushed: x" << uncr.first << " y" << uncr.second << "\n";*/
-    top_score = 12;
-    bottom_score = 12;
 	active_players.first = plr1;
 	active_players.second = plr2;
 	
@@ -44,9 +42,11 @@ void model::start_game(int plr1, int plr2)
 
 int model::get_winner()
 {
-    if (top_score == 0) return active_players.second;
-    if (bottom_score == 0) return active_players.first;
-    return -1;
+	printf("getting winner.................................................\n");
+    if (board.get_top_score() == 0) return active_players.second;
+    if (board.get_bottom_score() == 0) return active_players.first;
+	printf("no winner yet\n");
+    return EOF;
 }
 
 std::string model::get_player_name(int id)

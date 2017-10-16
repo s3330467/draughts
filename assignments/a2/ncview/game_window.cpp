@@ -31,6 +31,16 @@ void draughts::ncview::game_window::activate(void)
             themodel->make_move(playernum, move_coords.first.first, 
                 move_coords.first.second, move_coords.second.first,
                 move_coords.second.second);
+			int winner = themodel->get_winner();
+			if(winner != EOF) {
+				std::cout << "the winner is: " 
+					<< themodel->get_player_name(playernum)
+					<< " with a score of '"
+					<< themodel->get_player_score(playernum) 
+					<< "'"
+					<< std::endl;
+				quit = true;
+			}
         }
         catch(std::exception& ex)
         {

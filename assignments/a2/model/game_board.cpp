@@ -6,6 +6,8 @@ using namespace model;
 
 game_board::game_board(int x, int y) : x(x), y(y) {
 	board = std::vector<std::vector<std::unique_ptr<piece::game_piece>>>(x);
+	top_score = 0;
+	bottom_score = 0;
 
 	for(unsigned int i = 0; i < board.size(); i++) {//iterate through board in x direciton
 
@@ -17,11 +19,13 @@ game_board::game_board(int x, int y) : x(x), y(y) {
 				//top, player 1
 				board[i][j] = std::make_unique<piece::man>(
 						piece::man(true));
+				top_score++;
 
 			} else if(j > static_cast<unsigned int>(y/2) && j%2 == i%2) {
 				//bottom, player 2
 				board[i][j] = std::make_unique<piece::man>(
 						piece::man(false));
+				bottom_score++;
 
 			} else {
 				//middle, no piece
@@ -64,6 +68,12 @@ bool game_board::make_move(move move) {
 		board[from_coord.first][from_coord.second].swap(board[to_coord.first][to_coord.second]);
 
 		bool is_top = board[to_coord.first][to_coord.second].get()->get_is_top();
+		if(is_top) {
+			bottom_score--;
+		} else {
+			top_score--;
+		}
+
 		if((!is_top && to_coord.second == 0) || (is_top && to_coord.second == y-1)) {
 			board[to_coord.first][to_coord.second].reset();
 			board[to_coord.first][to_coord.second] = std::make_unique<piece::king>(piece::king(is_top));
