@@ -37,6 +37,7 @@ void model::start_game(int plr1, int plr2)
 	active_players.first = plr1;
 	active_players.second = plr2;
 	
+	board = game_board(8,8);
 	current_player = active_players.first;
 }
 
