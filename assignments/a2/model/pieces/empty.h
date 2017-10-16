@@ -9,14 +9,14 @@ namespace draughts {
 			class empty : public game_piece {
 
 				public:
-					empty(coordinate coords, bool is_top) : game_piece(coords, is_top) {}
+					empty(bool is_top) : game_piece(is_top) {}
 
 					char visual() const {
 						return ' ';
 					}
 
-					move::mtype is_valid(coordinate to) const;
-					std::vector<move> get_valid_moves() const;
+					//move::mtype is_valid(coordinate from, coordinate to) const;
+					std::vector<move> get_valid_moves(coordinate *from) const;
 			};
 		}
 	}

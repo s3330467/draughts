@@ -100,8 +100,8 @@ void model::make_move(int playernum,
 
 	bool found = false;
 	for(auto it = valid_moves.begin(); it != valid_moves.end(); it++) {
-		auto fcoord = it->from.get_uncrush();
-		auto tcoord = it->to.get_uncrush();
+		auto fcoord = it->from->get_uncrush();
+		auto tcoord = it->to->get_uncrush();
 
 		if(fcoord.first != startx) continue;
 		if(fcoord.second != starty) continue;

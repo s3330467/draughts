@@ -9,7 +9,7 @@ namespace draughts {
 			class man : public game_piece {
 
 				public:
-					man(coordinate coords, bool is_top) : game_piece(coords, is_top) {}
+					man(bool is_top) : game_piece(is_top) {}
 
 					char visual() const {
 						if(is_top) {
@@ -19,8 +19,8 @@ namespace draughts {
 						}
 					}
 
-					move::mtype is_valid(coordinate to) const;
-					std::vector<move> get_valid_moves() const;
+					//move::mtype is_valid(coordinate *from, coordinate *to) const;
+					std::vector<move> get_valid_moves(coordinate *from) const;
 			};
 		}
 	}
