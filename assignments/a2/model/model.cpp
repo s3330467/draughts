@@ -73,15 +73,15 @@ char model::get_token(int x ,int y)
 void model::test_coords(int startx, int starty, int endx, int endy) {
 	printf("testing coordinates\n");
 	auto st_uncr = coordinate::from_uncrush(startx, starty);
-	auto st_pair = st_uncr.get_uncrush();
-	auto st_paircr = st_uncr.get_crush();
+	auto st_pair = st_uncr->get_uncrush();
+	auto st_paircr = st_uncr->get_crush();
 	printf("uncr x:%d y:%d\n", startx, starty);
 	printf("uncr x:%d y:%d\n", st_pair.first, st_pair.second);
 	printf("cr x:%d y:%d\n", st_paircr.first, st_paircr.second);
 
 	auto en_uncr = coordinate::from_uncrush(endx, endy);
-	auto en_pair = en_uncr.get_uncrush();
-	auto en_paircr = en_uncr.get_crush();
+	auto en_pair = en_uncr->get_uncrush();
+	auto en_paircr = en_uncr->get_crush();
 	printf("uncr x:%d y:%d\n", endx, endy);
 	printf("uncr x:%d y:%d\n", en_pair.first, en_pair.second);
 	printf("cr x:%d y:%d\n", en_paircr.first, en_paircr.second);
@@ -120,8 +120,8 @@ void model::make_move(int playernum,
 	printf("finding the valid move in the list:\n");
 	bool found = false;
 	for(auto it = valid_moves.begin(); it != valid_moves.end(); it++) {
-		auto fcoord = it->from.get_uncrush();
-		auto tcoord = it->to.get_uncrush();
+		auto fcoord = it->from->get_uncrush();
+		auto tcoord = it->to->get_uncrush();
 
 		if(fcoord.first != startx) continue;
 		if(fcoord.second != starty) continue;

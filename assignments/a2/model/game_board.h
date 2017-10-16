@@ -24,7 +24,7 @@ namespace draughts {
 			int get_x() { return x; }
 			int get_y() { return y; }
 
-			const piece::game_piece * get_piece(coordinate coord) const;
+			const piece::game_piece * get_piece(coordinate *coord) const;
 			/**
 			 * make the move on the board, remove the captured piece
 			 * does't check anything
@@ -35,11 +35,11 @@ namespace draughts {
 			 */
 			bool make_move(move);
 			std::vector<move> available_moves(bool) const;
-			bool can_take(coordinate piece) const;
-			static coordinate get_captured(move);
+			bool can_take(coordinate *piece) const;
+			static coordinate* get_captured(move);
 
-			bool valid(coordinate coords) const {
-				auto pair = coords.get_crush();
+			bool valid(coordinate *coords) const {
+				auto pair = coords->get_crush();
 				bool xlow = pair.first >= 0;
 				bool ylow = pair.second >= 0;
 				bool xhigh = pair.first < x;

@@ -20,8 +20,8 @@ namespace draughts {
 
 				virtual char visual() const = 0;
 
-				virtual move::mtype is_valid(coordinate from, coordinate to) const = 0;
-				virtual std::vector<move> get_valid_moves(coordinate from) const = 0;
+				//virtual move::mtype is_valid(coordinate *from, coordinate *to) const = 0;
+				virtual std::vector<move> get_valid_moves(coordinate *from) const = 0;
 			};
 		}
 	}

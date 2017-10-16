@@ -19,8 +19,8 @@ namespace draughts {
 						}
 					}
 
-					move::mtype is_valid(coordinate from, coordinate to) const;
-					std::vector<move> get_valid_moves(coordinate from) const;
+					//move::mtype is_valid(coordinate *from, coordinate *to) const;
+					std::vector<move> get_valid_moves(coordinate *from) const;
 			};
 		}
 	}

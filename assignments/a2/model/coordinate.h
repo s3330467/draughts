@@ -15,14 +15,14 @@ namespace draughts {
 			public:
 			coordinate(void) : x(-1), y(-1) {}
 
-			static coordinate from_crush(int x, int y) {
-				return coordinate(x, y);
+			static coordinate * from_crush(int x, int y) {
+				return new coordinate(x, y);
 			}
 
 			//pauls code has x and y swapped and indices start at 1
-			static coordinate from_uncrush(int x, int y) {
+			static coordinate * from_uncrush(int x, int y) {
 				//return coordinate((x-1)/2, y-1);
-				return coordinate(x-1, y-1);
+				return new coordinate(x-1, y-1);
 			}
 
 			std::pair<int, int> get_crush() const;
