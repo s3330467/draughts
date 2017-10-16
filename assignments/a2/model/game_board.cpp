@@ -197,8 +197,8 @@ bool game_board::can_take(coordinate *piece_coord) const {
 		
 		if(it->type != move::VALID_ATTACK) continue;//dont do non-attack
 		auto to_piece = get_piece(it->to);
-		if(!to_piece) continue;//dont do if there is a piece at destination
-		if(to_piece->visual() != ' ') continue;
+		if(!to_piece) continue;
+		if(to_piece->visual() != ' ') continue;//dont do if there is a piece at destination
 
 		coordinate *capture_pos = get_captured(*it);
 		const piece::game_piece *capture = get_piece(capture_pos);
