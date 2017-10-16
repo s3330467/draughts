@@ -24,6 +24,9 @@ namespace draughts {
 			int get_x() { return x; }
 			int get_y() { return y; }
 
+void print_coords(coordinate *from, coordinate *to) const;
+void print_coords(coordinate *toprint) const;
+
 			const piece::game_piece * get_piece(coordinate *coord) const;
 			/**
 			 * make the move on the board, remove the captured piece

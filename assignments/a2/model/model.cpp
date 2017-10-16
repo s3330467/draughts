@@ -131,12 +131,15 @@ void model::make_move(int playernum,
 		//	-yes
 		//		make the move (from the list)
 		//		check the return value of make_move
+		found = true;
 		if(board.make_move(*it)) {
 			//			-true
 			//				make the player take their turn again
+			printf("have to make another move\nx:%d y:%d -> x:%d y:%d\n", startx, starty, endx, endy);
 		} else {
 			//			-false
 			//				other players turn
+			printf("making move \nx:%d y:%d -> x:%d y:%d\n", startx, starty, endx, endy);
 			if(is_player_top) {
 				current_player = active_players.second;
 			} else {
@@ -150,6 +153,7 @@ void model::make_move(int playernum,
 	if(!found) {
 		//	-no
 		//		make the player take their turn again
+		printf("can't make move!\n");
 	}
 	
 }

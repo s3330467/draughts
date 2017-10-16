@@ -64,6 +64,18 @@ bool game_board::make_move(move move) {
 	}
 }
 
+void game_board::print_coords(coordinate *from, coordinate *to) const {
+	auto from_pair = from->get_uncrush();
+	auto to_pair = to->get_uncrush();
+
+	printf("x:%d y%d -> x%d y%d", from_pair.first, from_pair.second, to_pair.first, to_pair.second);
+}
+void game_board::print_coords(coordinate *toprint) const {
+	auto print_pair = toprint->get_uncrush();
+
+	printf("x:%d y%d", print_pair.first, print_pair.second);
+}
+
 std::vector<move> game_board::available_moves(bool top_player) const {
 	//printf("starting available moves\n");
 	std::vector<move> available_moves;
@@ -71,29 +83,30 @@ std::vector<move> game_board::available_moves(bool top_player) const {
 	const piece::game_piece *current_piece, *capture_piece;
 	coordinate *capture_coords;
 	bool attackmoveexists = false;
-	int asdf = 0;
+	int move_count = 0;
 
 	for(unsigned int i = 0; i < board.size(); i++) {//iterate through board in x direciton
 
 		for(unsigned int j = 0; j < board[i].size(); j++) {//iterate through board in y direction (the column we just added)
 			coordinate *coord = coordinate::from_crush(i, j);
 			current_piece = get_piece(coord);
+
 			if(current_piece == nullptr) continue;
 			if(current_piece->get_is_top() != top_player) continue;//check current player ownes this piece
+
 			piece_moves = current_piece->get_valid_moves(coord);
 
-					asdf++;
+			move_count++;
 			for(unsigned int k = 0; k < piece_moves.size(); k++){
 				//validate coordinates
 				move curr = piece_moves.at(k);
 				if(!valid(curr.from) || !valid(curr.to)) {
-					auto fromtemp = curr.from->get_crush();
-					auto totemp = curr.to->get_crush();
-					printf("%d not valid from'x:%d y:%d' to'x:%d y:%d'\n", asdf, fromtemp.first, fromtemp.second, totemp.first, totemp.second);
+					print_coords(curr.from, curr.to);
+					printf(" %d coordinates not valid\n", move_count);
 					continue;
 				}
 
-				if(curr.type == move::VALID_ATTACK){
+				if(curr.type == move::VALID_ATTACK) {
 
 					capture_coords = get_captured(curr);
 					capture_piece = get_piece(capture_coords);
@@ -102,41 +115,46 @@ std::vector<move> game_board::available_moves(bool top_player) const {
 					//check destination is free
 					const piece::game_piece *dest = get_piece(curr.to);
 					if(!dest) {
-						auto temptopair = curr.to->get_uncrush();
-						printf("%d ATT: destination not valid x:%d y:%d '%c'\n", asdf, temptopair.first, temptopair.second, get_piece(curr.to)->visual());
+						print_coords(curr.from, curr.to);
+						printf(" %d ATT: destination not valid\n", move_count);
 						continue;
 					}
 					if(dest->visual() != ' ') {
-						auto temptopair = curr.to->get_uncrush();
-						printf("%d ATT: destination not free x:%d y:%d '%c'\n", asdf, temptopair.first, temptopair.second, get_piece(curr.to)->visual());
+						print_coords(curr.from, curr.to);
+						printf(" %d ATT: destination not free\n", move_count);
 						continue;
 					}
 					//check capture piece is there
 					if(capture_piece->visual() == ' ') {
-						printf("%d ATT: can't capture what's not there\n", asdf);
+						print_coords(curr.from, curr.to);
+						printf(" %d ATT: can't capture whats not there capture piece: ", move_count);
+						print_coords(capture_coords);
+						printf("\n");
 						continue;
 					}
 					if(capture_piece->get_is_top() == current_piece->get_is_top()) {
-						printf("%d ATT: can't capture your own man\n", asdf);
+						print_coords(curr.from, curr.to);
+						printf(" %d ATT: can't capture your own man\n", move_count);
 						continue;
 					}
 					//available_moves.resize( available_moves.size() + piece_moves.size());//valiant effort, but we dont actually know how big it needs to be
 					available_moves.push_back(curr);
-					printf("%d ATT: attack move added!\n", asdf);
+					print_coords(curr.from, curr.to);
+					printf(" %d ATT: move added!\n", move_count);
 					attackmoveexists = true;
 				}
 
 				if(curr.type == move::VALID && !attackmoveexists) {
-					//auto asdf = curr.to;
 					auto tempto = curr.to;
 					const piece::game_piece *dest = get_piece(tempto);
 					if(!dest || dest->visual() != ' ') {
-						auto temptopair = tempto->get_uncrush();
-						printf("%d destination not free x:%d y:%d\n", asdf, temptopair.first, temptopair.second);
+						print_coords(curr.from, curr.to);
+						printf(" %d destination not free\n", move_count);
 						continue;
 					}
 					available_moves.push_back(curr);
-					printf("%d normal move added!\n", asdf);
+					print_coords(curr.from, curr.to);
+					printf(" %d move added!\n", move_count);
 				}
 			}
 		}
@@ -186,8 +204,8 @@ coordinate * game_board::get_captured(move move) {
 
 	auto to_coord = move.to->get_uncrush();
 	auto from_coord = move.from->get_uncrush();
-	int dx = to_coord.first - from_coord.first;
-	int dy = to_coord.second - from_coord.second;
+	int dx = (to_coord.first - from_coord.first)/2;
+	int dy = (to_coord.second - from_coord.second)/2;
 	coordinate *capture_pos = coordinate::from_uncrush(from_coord.first + dx, from_coord.second + dy);
 
 	return capture_pos;
