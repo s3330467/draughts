@@ -9,11 +9,12 @@ std::vector<move> man::get_valid_moves(coordinate *from) const {
 	out.resize(4);
 	int dx1 = 1, dx2 = -1, dy = 1;
 	std::pair<int, int> current = from->get_crush();
+	coordinate *to;
 
 	if(!is_top) {
 		dy = -1;
 	}
-	coordinate *to;
+
 	to = coordinate::from_crush(current.first + dx1, current.second + dy);
 	out[0] = (move(from, to, move::mtype::VALID));
 
