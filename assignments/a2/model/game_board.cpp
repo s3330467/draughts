@@ -48,7 +48,7 @@ bool game_board::make_move(move move) {
 		//non attack
 		board[from_coord.first][from_coord.second].swap(board[to_coord.first][to_coord.second]);
 
-		return can_take(move.to);
+		return false;
 	} else if(move.type == move::VALID_ATTACK) {
 		//attack move
 		coordinate *capturedpos = get_captured(move);
