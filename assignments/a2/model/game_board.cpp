@@ -189,17 +189,21 @@ std::vector<move> game_board::available_moves(bool top_player) const {
 bool game_board::can_take(coordinate *piece_coord) const {
 	const piece::game_piece *piece = get_piece(piece_coord);
 
-	if(!piece || piece->visual() == ' ') return false;
+	if(!piece) return false;
+	if(piece->visual() == ' ') return false;
 	std::vector<move> piece_moves = piece->get_valid_moves(piece_coord);
 
 	for(auto it = piece_moves.begin(); it != piece_moves.end(); it++) {
 		
 		if(it->type != move::VALID_ATTACK) continue;//dont do non-attack
-		if(get_piece(it->to) != nullptr && get_piece(it->to)->visual() != ' ') continue;//dont do if there is a piece at destination
+		auto to_piece = get_piece(it->to);
+		if(!to_piece) continue;//dont do if there is a piece at destination
+		if(to_piece->visual() != ' ') continue;
 
 		coordinate *capture_pos = get_captured(*it);
 		const piece::game_piece *capture = get_piece(capture_pos);
-		if(!capture) return false;
+		if(!capture) continue;
+		if(capture->visual() == ' ') continue;
 		//if they are on opposite teams, return true
 		if(capture->get_is_top() != piece->get_is_top()) return true;
 	}
