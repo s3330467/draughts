@@ -4,6 +4,7 @@
 
 #include "pieces/empty.h"
 #include "pieces/man_piece.h"
+#include "pieces/king_piece.h"
 #include "pieces/game_piece.h"
 #include "move.h"
 

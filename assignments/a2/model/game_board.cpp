@@ -48,6 +48,11 @@ bool game_board::make_move(move move) {
 		//non attack
 		board[from_coord.first][from_coord.second].swap(board[to_coord.first][to_coord.second]);
 
+		bool is_top = board[to_coord.first][to_coord.second].get()->get_is_top();
+		if((!is_top && to_coord.second == 0) || (is_top && to_coord.second == y-1)) {
+			board[to_coord.first][to_coord.second].reset();
+			board[to_coord.first][to_coord.second] = std::make_unique<piece::king>(piece::king(is_top));
+		}
 		return false;
 	} else if(move.type == move::VALID_ATTACK) {
 		//attack move
@@ -56,8 +61,13 @@ bool game_board::make_move(move move) {
 		board[captured_coord.first][captured_coord.second].reset();
 		board[captured_coord.first][captured_coord.second] = std::make_unique<piece::empty>(piece::empty(false));
 
-
 		board[from_coord.first][from_coord.second].swap(board[to_coord.first][to_coord.second]);
+
+		bool is_top = board[to_coord.first][to_coord.second].get()->get_is_top();
+		if((!is_top && to_coord.second == 0) || (is_top && to_coord.second == y-1)) {
+			board[to_coord.first][to_coord.second].reset();
+			board[to_coord.first][to_coord.second] = std::make_unique<piece::king>(piece::king(is_top));
+		}
 		return can_take(move.to);
 	} else {
 		return true;
